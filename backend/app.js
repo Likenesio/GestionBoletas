@@ -1,5 +1,5 @@
 'use strict';
-require ('dotenv').config();
+require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -17,6 +17,12 @@ app.use(bodyParser.json());
 
 app.use('api', usuario_route);
 
+const options = {
+    autoIndex: true,
+    connectTimeoutMS: 10000,
+    socketTimeoutMS: 45000,
+    family: 4
+};
 const db_host = process.env.DB_HOST;
 const db_port = process.env.DB_PORT;
 const db_name = process.env.DB_NAME;
