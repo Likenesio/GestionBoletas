@@ -10,14 +10,12 @@ app.use(cors());
 app.options('*', cors());
 
 var usuario_route = require('./routes/usuarioRoute');
-var documento_route = require('./routes/documentoRoute');
 
 const mongoose = require('mongoose');
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 app.use('api', usuario_route);
-app.use('api', documento_route);
 
 const db_host = process.env.DB_HOST;
 const db_port = process.env.DB_PORT;
