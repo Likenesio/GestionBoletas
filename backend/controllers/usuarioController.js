@@ -1,9 +1,6 @@
 const Usuario = require("../models/usuario");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-require('dotenv').config();
-
-const jwtSecret = process.env.JWT_SECRET;
 
 
 const insert = async (req, res) => {
@@ -129,29 +126,32 @@ const buscar = (req, res) => {
 
 const login = async (req, res) => {
   const { correo, contrasenia } = req.body;
+  console.log(correo, contrasenia)
 
   try {
     const usuario = await Usuario.findOne({ correo });
-
+  
     if (!usuario) {
-      return res.status(400).json({ message: "Usuario no encontrado" });
+      res.status(404).json({ message: "Correo no encontrado" });
+      return;
     }
 
     const passMatch = await bcrypt.compare(contrasenia, usuario.contrasenia);
-
+    console.log("passMatch: ", passMatch)
     if (!passMatch) {
-      return res.status(401).send({ message: "Contraseña inválida" });
+      res.status(401).send({ message: "Contraseña inválida" });
+      return;
     }
 
     const token = jwt.sign(
       { userId: usuario._id, rol: usuario.rol },
-      jwtSecret, // Cambié "penelope" por la variable de entorno
+      "penelope",
       { expiresIn: "7d" }
     );
-
     res.json({ token });
   } catch (error) {
     res.status(500).send({ message: "Error al iniciar sesión", error });
+    return;
   }
 };
 
