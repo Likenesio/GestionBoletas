@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 require('dotenv').config();
 
 const jwtSecret = process.env.JWT_SECRET;
-
+console.log(jwtSecret)
 const insert = async (req, res) => {
   try {
     if (!req.body) {
@@ -27,7 +27,6 @@ const insert = async (req, res) => {
       correo: req.body.correo,
       rol: req.body.rol
     });
-
     await usuario.save();
     res.status(200).send({ message: "Usuario creado exitosamente" });
   } catch (err) {
