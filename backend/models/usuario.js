@@ -9,27 +9,27 @@ const userSchema = schema(
             },
             nombre_usuario: {
                 type: String,
-                require: true
+                required: true
             },
             apellido: {
              type: String,
-             require: true
+             required: true
             },
             contrasenia: {
                 type: String,
-                require: true
+                required: true
             },
             fono: {
                 type: String,
-                require:true
+                required:true
             },
             correo:{
                 type: String,
-                require:true
+                required:true
             },
             rol:{
                 type: String,
-                require: true
+                required: true
             }
  
 }

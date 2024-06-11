@@ -4,29 +4,29 @@ const jwt = require("jsonwebtoken");
 
 const insert = async (req, res) => {
   try {
+    if (!req.body) {
+      return res.status(400).send({ message: "El cuerpo de la solicitud está vacío" });
+    }
+
     const existingUser = await Usuario.findOne({ correo: req.body.correo });
     if (existingUser) {
       return res.status(400).send({ message: "El correo electrónico ya está en uso" });
     }
-    
-    let usuario = new Usuario();
+
     const salt = 12;
     const pass = req.body.contrasenia;
-    usuario.rut_usuario = req.body.rut_usuario;
-    usuario.nombre_usuario = req.body.nombre_usuario;
-    usuario.apellido = req.body.apellido;
-    usuario.contrasenia = await bcrypt.hash(pass, salt);
-    usuario.fono = req.body.fono;
-    usuario.correo = req.body.correo;
-    usuario.rol = req.body.rol;
-    
-    usuario.save()
-      .then((createUsuario) => {
-        res.status(200).send({ createUsuario });
-      })
-      .catch((err) => {
-        res.status(500).send({ message: "Error al crear usuario: " + err });
-      });
+    let usuario = new Usuario({
+      rut_usuario: req.body.rut_usuario,
+      nombre_usuario: req.body.nombre_usuario,
+      apellido: req.body.apellido,
+      contrasenia: await bcrypt.hash(pass, salt),
+      fono: req.body.fono,
+      correo: req.body.correo,
+      rol: req.body.rol
+    });
+
+    await usuario.save();
+    res.status(200).send({ message: "Usuario creado exitosamente" });
   } catch (err) {
     res.status(500).send({ message: "Error al crear usuario: " + err });
   }
@@ -44,74 +44,61 @@ const eliminar = (req, res) => {
 };
 
 const actualizar = async (req, res) => {
-  const salt = 12;
-  const pass = req.body.contrasenia;
-  let usuarioId = req.params._id;
-  rut_usuario = req.body.rut_usuario;
-  nombre_usuario = req.body.nombre_usuario;
-  apellido = req.body.apellido;
-  contrasenia = await bcrypt.hash(pass, salt);
-  fono = req.body.fono;
-  correo = req.body.correo;
-  rol = req.body.rol;
-  Usuario.findByIdAndUpdate(
-    usuarioId,
-    {
-      rut_usuario: rut_usuario,
-      nombre_usuario: nombre_usuario,
-      apellido: apellido,
-      contrasenia: contrasenia,
-      fono: fono,
-      correo: correo,
-      rol: rol,
-    },
-    { new: true }
-  )
-    .then((usuario) => {
-      res.status(200).send({
-        message: "Se ha actualizado usuario exitosamente",
-        usuario: usuario,
-      });
-    })
-    .catch((err) => {
-      return res.status(500).send({
-        message: "Error al actualizar usuario",
-      });
-    });
-};
-//Función que actualiza los datos de un usuario, sin afectar la contraseña
-const actualizarDatos = async (req, res) => {
+  try {
+    const salt = 12;
+    const pass = req.body.contrasenia;
+    let usuarioId = req.params._id;
 
-  let usuarioId = req.params._id;
-  rut_usuario = req.body.rut_usuario;
-  nombre_usuario = req.body.nombre_usuario;
-  apellido = req.body.apellido;
-  fono = req.body.fono;
-  correo = req.body.correo;
-  rol = req.body.rol;
-  Usuario.findByIdAndUpdate(
-    usuarioId,
-    {
-      rut_usuario: rut_usuario,
-      nombre_usuario: nombre_usuario,
-      apellido: apellido,
-      fono: fono,
-      correo: correo,
-      rol: rol,
-    },
-    { new: true }
-  )
-    .then((usuario) => {
-      res.status(200).send({
-        message: "Se ha actualizado usuario exitosamente",
-        usuario: usuario,
-      });
-    })
-    .catch((err) => {
-      return res.status(500).send({
-        message: "Error al actualizar usuario",
-      });
+    const updatedUser = {
+      rut_usuario: req.body.rut_usuario,
+      nombre_usuario: req.body.nombre_usuario,
+      apellido: req.body.apellido,
+      contrasenia: pass ? await bcrypt.hash(pass, salt) : undefined,
+      fono: req.body.fono,
+      correo: req.body.correo,
+      rol: req.body.rol
+    };
+
+    const usuario = await Usuario.findByIdAndUpdate(usuarioId, updatedUser, { new: true });
+
+    if (!usuario) {
+      return res.status(404).send({ message: "Usuario no encontrado" });
+    }
+
+    res.status(200).send({
+      message: "Se ha actualizado usuario exitosamente",
+      usuario: usuario
     });
+  } catch (err) {
+    res.status(500).send({ message: "Error al actualizar usuario: " + err });
+  }
+};
+
+const actualizarDatos = async (req, res) => {
+  try {
+    let usuarioId = req.params._id;
+    const updatedUser = {
+      rut_usuario: req.body.rut_usuario,
+      nombre_usuario: req.body.nombre_usuario,
+      apellido: req.body.apellido,
+      fono: req.body.fono,
+      correo: req.body.correo,
+      rol: req.body.rol
+    };
+
+    const usuario = await Usuario.findByIdAndUpdate(usuarioId, updatedUser, { new: true });
+
+    if (!usuario) {
+      return res.status(404).send({ message: "Usuario no encontrado" });
+    }
+
+    res.status(200).send({
+      message: "Se ha actualizado usuario exitosamente",
+      usuario: usuario
+    });
+  } catch (err) {
+    res.status(500).send({ message: "Error al actualizar usuario: " + err });
+  }
 };
 
 const listar = (req, res) => {
@@ -142,14 +129,14 @@ const login = async (req, res) => {
     const usuario = await Usuario.findOne({ correo });
 
     if (!usuario) {
-      res.status(404).json({ message: "Correo no encontrado" });
+      res.status(400).json({ message: "Solicitud incorrecta" });
       return;
     }
 
     const passMatch = await bcrypt.compare(contrasenia, usuario.contrasenia);
 
     if (!passMatch) {
-      res.status(401).send({ message: "Contraseña inválida" });
+      res.status(401).send({ message: "Usuario inválido" });
       return;
     }
 

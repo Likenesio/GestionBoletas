@@ -15,7 +15,7 @@ const mongoose = require('mongoose');
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
-app.use('api', usuario_route);
+app.use('/api', usuario_route);
 
 const options = {
     autoIndex: true,
