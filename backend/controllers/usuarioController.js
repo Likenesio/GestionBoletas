@@ -126,7 +126,6 @@ const buscar = (req, res) => {
 
 const login = async (req, res) => {
   const { correo, contrasenia } = req.body;
-  console.log(correo, contrasenia)
 
   try {
     const usuario = await Usuario.findOne({ correo });
@@ -137,7 +136,7 @@ const login = async (req, res) => {
     }
 
     const passMatch = await bcrypt.compare(contrasenia, usuario.contrasenia);
-    console.log("passMatch: ", passMatch)
+
     if (!passMatch) {
       res.status(401).send({ message: "Contraseña inválida" });
       return;
