@@ -4,7 +4,8 @@ const jwt = require("jsonwebtoken");
 require('dotenv').config();
 
 const jwtSecret = process.env.JWT_SECRET;
-console.log(jwtSecret)
+
+
 const insert = async (req, res) => {
   try {
     if (!req.body) {
@@ -18,6 +19,8 @@ const insert = async (req, res) => {
 
     const salt = 12;
     const pass = req.body.contrasenia;
+    console.log("Contraseña recibida:", pass);
+    
     let usuario = new Usuario({
       rut_usuario: req.body.rut_usuario,
       nombre_usuario: req.body.nombre_usuario,
