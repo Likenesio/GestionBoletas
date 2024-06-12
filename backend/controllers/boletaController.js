@@ -2,10 +2,10 @@
 const Boleta = require("../models/boleta");
 const Proveedor = require("../models/proveedor");
 
-exports.createBoleta = async (req, res) => {
+exports.crearBoleta = async (req, res) => {
   try {
-    const { numero, producto, precio_unitario, fecha, cantidad, proveedor } = req.body;
-    const newBoleta = new Boleta({ numero, producto, precio_unitario, fecha, cantidad, proveedor });
+    const { numero, productos, fecha, proveedor } = req.body;
+    const newBoleta = new Boleta({ numero, productos, fecha, proveedor });
     await newBoleta.save();
     res.status(201).json(newBoleta);
   } catch (error) {

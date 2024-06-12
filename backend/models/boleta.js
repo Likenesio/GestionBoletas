@@ -1,28 +1,32 @@
 "use strict";
+
 const mongoose = require("mongoose");
-const boleta = require("./boleta");
 const schema = mongoose.Schema;
 
-const boletaSchema = schema({
-  numero: {
-    type: Number,
-    required: true,
-  },
-  producto: {
+const productoSchema = new schema({
+  nombre: {
     type: String,
-    require: true,
+    required: true,
   },
   precio_unitario: {
     type: String,
-    require: true,
-  },
-  fecha: {
-    type: Date,
-    require: true,
+    required: true,
   },
   cantidad: {
     type: Number,
-    require: true,
+    required: true,
+  },
+});
+
+const boletaSchema = new schema({
+  numero:{
+    type: Number,
+    required: true,
+  },
+  productos: [productoSchema],
+  fecha: {
+    type: Date,
+    required: true,
   },
   proveedor: [
     {
@@ -31,4 +35,5 @@ const boletaSchema = schema({
     },
   ],
 });
+
 module.exports = mongoose.model("boleta", boletaSchema);
