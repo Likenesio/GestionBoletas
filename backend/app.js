@@ -10,6 +10,7 @@ app.options('*', cors());
 
 var usuario_route = require('./routes/usuarioRoute');
 var proveedor_route = require('./routes/proveedorRoute');
+var boleta_route = require('./routes/boletaRoute');
 
 const mongoose = require('mongoose');
 app.use(bodyParser.urlencoded({extended:false}));
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 
 app.use('/api', usuario_route);
 app.use('/api', proveedor_route);
+app.use('/api', boleta_route);
 
 const options = {
     autoIndex: true,

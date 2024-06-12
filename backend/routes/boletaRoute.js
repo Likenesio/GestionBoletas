@@ -1,20 +1,22 @@
+'use strict'
+
 const express = require("express");
-const router = express.Router();
 const boletaController = require("../controllers/boletaController");
+const api = express.Router();
 
 // Crear una nueva boleta
-router.post("/", boletaController.createBoleta);
+api.post("/boleta", boletaController.createBoleta);
 
 // Obtener todas las boletas
-router.get("/", boletaController.getAllBoletas);
+api.get("/boleta", boletaController.getAllBoletas);
 
 // Obtener una boleta por ID
-router.get("/:id", boletaController.getBoletaById);
+api.get("/boleta/:id", boletaController.getBoletaById);
 
 // Actualizar una boleta
-router.put("/:id", boletaController.updateBoleta);
+api.put("/boleta/:id", boletaController.updateBoleta);
 
 // Eliminar una boleta
-router.delete("/:id", boletaController.deleteBoleta);
+api.delete("/boleta/:id", boletaController.deleteBoleta);
 
-module.exports = router;
+module.exports = api;
