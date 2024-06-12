@@ -157,11 +157,16 @@ const login = async (req, res) => {
 
 const cambiarContrasenia = async (req, res) => {
   const { usuarioId, oldPassword, newPassword } = req.body;
+  console.log("Usuario ID recibido:", usuarioId);
+  console.log("Contraseña antigua recibida:", oldPassword);
+  console.log("Nueva contraseña recibida:", newPassword);
 
   try {
+
     const usuario = await Usuario.findById(usuarioId);
 
     if (!usuario) {
+      console.log("Usuario no encontrado");
       res.status(404).json({ message: "Usuario no encontrado" });
       return;
     }
@@ -169,6 +174,7 @@ const cambiarContrasenia = async (req, res) => {
     const passMatch = await bcrypt.compare(oldPassword, usuario.contrasenia);
 
     if (!passMatch) {
+      console.log("Contraseña actual incorrecta");
       res.status(401).send({ message: "Contraseña actual incorrecta" });
       return;
     }
@@ -182,12 +188,14 @@ const cambiarContrasenia = async (req, res) => {
       { new: true }
     );
 
+    console.log("Contraseña cambiada exitosamente");
     res.status(200).json({ message: "Contraseña cambiada exitosamente" });
   } catch (error) {
-    res.status(500).send({ message: "Error al cambiar la contraseña", error });
-    return;
+    console.error("Error al cambiar la contraseña:", error);
+    res.status(500).send({ message: "Error al cambiar la contraseña" });
   }
 };
+
 
 
 module.exports = { insert, eliminar, actualizar, listar, buscar, login, actualizarDatos, cambiarContrasenia };
