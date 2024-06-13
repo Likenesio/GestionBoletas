@@ -1,14 +1,12 @@
 <template>
-  <div id="app">
-    <nav v-if="isAuthenticated">
-      <router-link to="/dashboard"></router-link>
+  <div>
+   <!--    <router-link to="/dashboard"></router-link> -->
      <!--  <router-link to="/register">Registrar</router-link>
       <router-link to="/userslist">Listar Usuarios</router-link>
       <router-link to="/update">Actualizar Usuario</router-link>
       <router-link to="/delete">Eliminar Usuario</router-link>
       <router-link :to="`/change-password/${userId}`">Cambiar Contraseña</router-link>
       <button @click="logout">Cerrar Sesión</button> -->
-    </nav>
     <router-view></router-view>
   </div>
 </template>

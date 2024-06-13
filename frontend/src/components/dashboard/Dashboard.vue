@@ -33,19 +33,19 @@
                     <q-list>
                       <q-item clickable v-close-popup @click="onItemClick">
                         <q-item-section>
-                          <q-item-label>Agregar Usuario</q-item-label>
+                          <q-item-label>Agregar Usuario</q-item-label><!-- aqui me tiene que redirigir al componente Register-->
                         </q-item-section>
                       </q-item>
 
                       <q-item clickable v-close-popup @click="onItemClick">
                         <q-item-section>
-                          <q-item-label>Listar Usuario</q-item-label>
+                          <q-item-label>Listar Usuario</q-item-label><!-- aqui me tiene que redirigir al componente UserList -->
                         </q-item-section>
                       </q-item>
 
                       <q-item clickable v-close-popup @click="onItemClick">
                         <q-item-section>
-                          <q-item-label>Actualizar Usuario</q-item-label>
+                          <q-item-label>Actualizar Usuario</q-item-label><!-- aqui me tiene que redirigir al componente UpdateUser -->
                         </q-item-section>
                       </q-item>
                     </q-list>
@@ -64,19 +64,19 @@
                     <q-list>
                       <q-item clickable v-close-popup @click="onItemClick">
                         <q-item-section>
-                          <q-item-label>Agregar Proveedor</q-item-label>
+                          <q-item-label>Agregar Proveedor</q-item-label><!-- aqui me tiene que redirigir al componente RegisterProveedor-->
                         </q-item-section>
                       </q-item>
 
                       <q-item clickable v-close-popup @click="onItemClick">
                         <q-item-section>
-                          <q-item-label>Listar Proveedor</q-item-label>
+                          <q-item-label>Listar Proveedor</q-item-label><!-- aqui me tiene que redirigir al componente ProveedorList -->
                         </q-item-section>
                       </q-item>
 
                       <q-item clickable v-close-popup @click="onItemClick">
                         <q-item-section>
-                          <q-item-label>Actualizar Proveedor</q-item-label>
+                          <q-item-label>Actualizar Proveedor</q-item-label> <!-- aqui me tiene que redirigir al componente UpdateProveedor -->
                         </q-item-section>
                       </q-item>
                     </q-list>
@@ -94,19 +94,19 @@
                     <q-list>
                       <q-item clickable v-close-popup @click="onItemClick">
                         <q-item-section>
-                          <q-item-label>Agregar Boleta</q-item-label>
+                          <q-item-label>Agregar Boleta</q-item-label><!-- aqui me tiene que redirigir al componente RegisterBoleta-->
                         </q-item-section>
                       </q-item>
 
                       <q-item clickable v-close-popup @click="onItemClick">
                         <q-item-section>
-                          <q-item-label>Listar Boleta</q-item-label>
+                          <q-item-label>Listar Boleta</q-item-label><!-- aqui me tiene que redirigir al componente BoletaList-->
                         </q-item-section>
                       </q-item>
 
                       <q-item clickable v-close-popup @click="onItemClick">
                         <q-item-section>
-                          <q-item-label>Actualizar Boleta</q-item-label>
+                          <q-item-label>Actualizar Boleta</q-item-label><!-- aqui me tiene que redirigir al componente UpdateBoleta-->
                         </q-item-section>
                       </q-item>
                     </q-list>
