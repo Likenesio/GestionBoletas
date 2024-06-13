@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav v-if="isAuthenticated">
-      <router-link to="/dashboard">Dashboard</router-link>
+      <router-link to="/dashboard"></router-link>
      <!--  <router-link to="/register">Registrar</router-link>
       <router-link to="/userslist">Listar Usuarios</router-link>
       <router-link to="/update">Actualizar Usuario</router-link>
