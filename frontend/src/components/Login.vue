@@ -32,7 +32,7 @@
           });
           const token = response.data.token;
           localStorage.setItem('token', token); // Almacenar el token en localStorage
-          this.$router.push('/register'); // Redirigir al dashboard o página principal
+          this.$router.push('/dashboard'); // Redirigir al dashboard o página principal
           this.$root.isAuthenticated = true; // Actualizar el estado de autenticación
           this.$root.userId = JSON.parse(atob(token.split('.')[1])).userId; // Obtener el ID del usuario
         } catch (error) {
