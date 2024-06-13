@@ -6,21 +6,38 @@ import Register from '../components/user/Register.vue';
 import UserList from '../components/user/UserList.vue';
 import UpdateUser from '../components/user/UpdateUser.vue';
 import DeleteUser from '../components/user/DeleteUser.vue';
+/* import RegisterProveedor from '../components/proveedor/RegisterProveedor.vue';
+import ProveedorList from '../components/proveedor/ProveedorList.vue';
+import UpdateProveedor from '../components/proveedor/UpdateProveedor.vue';
+import RegisterBoleta from '../components/boleta/RegisterBoleta.vue';
+import BoletaList from '../components/boleta/BoletaList.vue';
+import UpdateBoleta from '../components/boleta/UpdateBoleta.vue'; */
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/login', component: Login },
-    { path: '/dashboard', component: Dashboard,  meta: { requiresAuth: true }},
+    {
+      path: '/dashboard',
+      component: Dashboard,
+      meta: { requiresAuth: true },
+      children: [
+        { path: 'register', component: Register },
+        { path: 'userslist', component: UserList },
+        { path: 'update', component: UpdateUser },
+       /*  { path: 'register-proveedor', component: RegisterProveedor },
+        { path: 'proveedor-list', component: ProveedorList },
+        { path: 'update-proveedor', component: UpdateProveedor },
+        { path: 'register-boleta', component: RegisterBoleta },
+        { path: 'boleta-list', component: BoletaList },
+        { path: 'update-boleta', component: UpdateBoleta }, */
+      ]
+    },
     { path: '/change-password/:_id', component: ChangePassword, meta: { requiresAuth: true } },
-    { path: '/register', component: Register, meta: { requiresAuth: true } },
-    { path: '/userslist', component: UserList, meta: { requiresAuth: true } },
-    { path: '/update', component: UpdateUser, meta: { requiresAuth: true } },
     { path: '/delete', component: DeleteUser, meta: { requiresAuth: true } },
-    { path: '/:catchAll(.*)', redirect: '/login' } // Utiliza una expresión regular personalizada para capturar todas las rutas
+    { path: '/:catchAll(.*)', redirect: '/login' }
   ]
 });
-
 
 // Middleware de navegación
 router.beforeEach((to, from, next) => {
@@ -31,6 +48,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-
 
 export default router;

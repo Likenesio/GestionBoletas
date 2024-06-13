@@ -14,7 +14,6 @@
       </q-header>
 
       <q-drawer v-model="drawer" show-if-above :width="200" :breakpoint="400">
-        <!-- Manejar las rutas a los distintos componentes -->
         <q-scroll-area
           style="
             height: calc(100% - 150px);
@@ -31,21 +30,21 @@
                 <div class="q-pa-sm">
                   <q-btn-dropdown style="background-color: #fafafa;" label="Usuario">
                     <q-list>
-                      <q-item clickable v-close-popup @click="onItemClick">
+                      <q-item clickable v-close-popup @click="onItemClick('/dashboard/register')">
                         <q-item-section>
-                          <q-item-label>Agregar Usuario</q-item-label><!-- aqui me tiene que redirigir al componente Register-->
+                          <q-item-label>Agregar Usuario</q-item-label>
                         </q-item-section>
                       </q-item>
 
-                      <q-item clickable v-close-popup @click="onItemClick">
+                      <q-item clickable v-close-popup @click="onItemClick('/dashboard/userslist')">
                         <q-item-section>
-                          <q-item-label>Listar Usuario</q-item-label><!-- aqui me tiene que redirigir al componente UserList -->
+                          <q-item-label>Listar Usuario</q-item-label>
                         </q-item-section>
                       </q-item>
 
-                      <q-item clickable v-close-popup @click="onItemClick">
+                      <q-item clickable v-close-popup @click="onItemClick('/dashboard/update')">
                         <q-item-section>
-                          <q-item-label>Actualizar Usuario</q-item-label><!-- aqui me tiene que redirigir al componente UpdateUser -->
+                          <q-item-label>Actualizar Usuario</q-item-label>
                         </q-item-section>
                       </q-item>
                     </q-list>
@@ -62,21 +61,21 @@
                 <div class="q-pa-sm">
                   <q-btn-dropdown style="background-color:  #fafafa;" label="Proveedor">
                     <q-list>
-                      <q-item clickable v-close-popup @click="onItemClick">
+                      <q-item clickable v-close-popup @click="onItemClick('/dashboard/register-proveedor')">
                         <q-item-section>
-                          <q-item-label>Agregar Proveedor</q-item-label><!-- aqui me tiene que redirigir al componente RegisterProveedor-->
+                          <q-item-label>Agregar Proveedor</q-item-label>
                         </q-item-section>
                       </q-item>
 
-                      <q-item clickable v-close-popup @click="onItemClick">
+                      <q-item clickable v-close-popup @click="onItemClick('/dashboard/proveedor-list')">
                         <q-item-section>
-                          <q-item-label>Listar Proveedor</q-item-label><!-- aqui me tiene que redirigir al componente ProveedorList -->
+                          <q-item-label>Listar Proveedor</q-item-label>
                         </q-item-section>
                       </q-item>
 
-                      <q-item clickable v-close-popup @click="onItemClick">
+                      <q-item clickable v-close-popup @click="onItemClick('/dashboard/update-proveedor')">
                         <q-item-section>
-                          <q-item-label>Actualizar Proveedor</q-item-label> <!-- aqui me tiene que redirigir al componente UpdateProveedor -->
+                          <q-item-label>Actualizar Proveedor</q-item-label>
                         </q-item-section>
                       </q-item>
                     </q-list>
@@ -84,6 +83,7 @@
                 </div>
               </q-item-section>
             </q-item>
+
             <q-item clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="receipt" />
@@ -92,21 +92,21 @@
                 <div class="q-pa-sm">
                   <q-btn-dropdown style="background-color:  #fafafa;" label="Boleta">
                     <q-list>
-                      <q-item clickable v-close-popup @click="onItemClick">
+                      <q-item clickable v-close-popup @click="onItemClick('/dashboard/register-boleta')">
                         <q-item-section>
-                          <q-item-label>Agregar Boleta</q-item-label><!-- aqui me tiene que redirigir al componente RegisterBoleta-->
+                          <q-item-label>Agregar Boleta</q-item-label>
                         </q-item-section>
                       </q-item>
 
-                      <q-item clickable v-close-popup @click="onItemClick">
+                      <q-item clickable v-close-popup @click="onItemClick('/dashboard/boleta-list')">
                         <q-item-section>
-                          <q-item-label>Listar Boleta</q-item-label><!-- aqui me tiene que redirigir al componente BoletaList-->
+                          <q-item-label>Listar Boleta</q-item-label>
                         </q-item-section>
                       </q-item>
 
-                      <q-item clickable v-close-popup @click="onItemClick">
+                      <q-item clickable v-close-popup @click="onItemClick('/dashboard/update-boleta')">
                         <q-item-section>
-                          <q-item-label>Actualizar Boleta</q-item-label><!-- aqui me tiene que redirigir al componente UpdateBoleta-->
+                          <q-item-label>Actualizar Boleta</q-item-label>
                         </q-item-section>
                       </q-item>
                     </q-list>
@@ -141,9 +141,7 @@
 
       <q-page-container>
         <q-page padding>
-          <p v-for="n in 15" :key="n">
-            <!-- Renderizar aquí el contenido de los componentes -->
-          </p>
+          <router-view />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -152,16 +150,24 @@
 
 <script>
 import { ref } from "vue";
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
+    const drawer = ref(false);
+    const router = useRouter();
+
+    const navigateTo = (path) => {
+      router.push(path);
+    };
+
+    const onItemClick = (path) => {
+      navigateTo(path);
+    };
+
     return {
-      drawer: ref(false),
-      userId: null,
-      isAuthenticated: false,
-      onItemClick () {
-        console.log('Clicked on an Item')
-      }
+      drawer,
+      onItemClick
     };
   },
   created() {
