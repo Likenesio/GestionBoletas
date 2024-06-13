@@ -134,7 +134,7 @@
               <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
             </q-avatar>
             <div class="text-weight-bold">Pablo González</div>
-            <div>@user</div>
+            <div>@{{ rol }}</div>
           </div>
         </q-img>
       </q-drawer>
@@ -178,7 +178,9 @@ export default {
       const token = localStorage.getItem("token");
       if (token) {
         const decoded = JSON.parse(atob(token.split(".")[1]));
+        console.log(decoded)
         this.userId = decoded.userId;
+        this.rol = decoded.rol;
         this.isAuthenticated = true;
         this.$router.push("/dashboard"); // Redirigir al dashboard si está autenticado
       } else {

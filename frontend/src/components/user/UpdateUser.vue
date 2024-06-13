@@ -1,89 +1,149 @@
 <template>
+  <div class="q-pa-md contenido" style="max-width: 400px">
     <div>
       <h1>Actualizar Usuario</h1>
-      <form @submit.prevent="updateUser">
-        <select v-model="selectedRut" @change="populateUserData">
-        <option v-for="user in users" :key="user._id" :value="user._id">{{ user.rut_usuario }}</option>
-      </select>
-        <input v-model="user.nombre_usuario" placeholder="Nombre" />
-        <input v-model="user.apellido" placeholder="Apellido" />
-        <input v-model="user.fono" placeholder="Fono" />
-        <input v-model="user.correo" placeholder="Correo" />
-        <input v-model="user.rol" placeholder="Rol" />
-        <input type="password" v-model="user.contrasenia" placeholder="Contraseña" />
-        <button type="submit">Actualizar</button>
-      </form>
-      <div v-if="message">{{ message }}</div>
     </div>
-  </template>
-  
-  <script>
-  import axios from '../../axios';
+    <q-form @submit="updateUser" class="q-gutter-md">
+      <q-select
+        filled
+        v-model="selectedRut"
+        label="Seleccionar RUT"
+        :options="users.map(user => ({ label: user.rut_usuario, value: user._id }))"
+        @input="populateUserData"
+      />
+
+      <q-input
+        filled
+        v-model="user.nombre_usuario"
+        label="Nombre"
+      />
+      <q-input
+        filled
+        v-model="user.apellido"
+        label="Apellido"
+      />
+      <q-input
+        filled
+        v-model="user.fono"
+        label="Fono"
+      />
+      <q-input
+        filled
+        v-model="user.correo"
+        label="Correo"
+      />
+      <q-input
+        filled
+        v-model="user.rol"
+        label="Rol"
+      />
+      <q-input
+        filled
+        type="password"
+        v-model="user.contrasenia"
+        label="Contraseña"
+      />
+
+      <div>
+        <q-btn label="Actualizar" type="submit" color="primary"/>
+      </div>
+    </q-form>
+
+    <div v-if="message" class="q-mt-md">
+      <q-banner dense inline-actions>{{ message }}</q-banner>
+    </div>
+  </div>
+</template>
 
   
-  export default {
-  data() {
-    return {
-      users: [],
-      selectedRut: '',
-      user: {
-        rut_usuario: '',
-        nombre_usuario: '',
-        apellido: '',
-        fono: '',
-        correo: '',
-        rol: ''
-      },
-      message: ''
-    };
-  },
-  created() {
-    this.fetchUsers();
-  },
-  methods: {
-    async fetchUsers() {
+<script>
+import { ref } from 'vue';
+import axios from '../../axios';
+
+export default {
+  setup() {
+    const users = ref([]);
+    const selectedRut = ref('');
+    const user = ref({
+      rut_usuario: '',
+      nombre_usuario: '',
+      apellido: '',
+      fono: '',
+      correo: '',
+      rol: '',
+      contrasenia: '',
+    });
+    const message = ref('');
+
+    const fetchUsers = async () => {
       try {
         const response = await axios.get('/usuario');
-        console.log(response);
-        this.users = response.data.usuario;
-        console.log(this.users);
+        users.value = response.data.usuario;
       } catch (error) {
         console.error('Error al listar usuarios:', error);
       }
-    },
-    populateUserData() {
-      const selectedUser = this.users.find(user => user._id === this.selectedRut);
+    };
+
+    const populateUserData = () => {
+      const selectedUser = users.value.find(user => user._id === selectedRut.value);
       if (selectedUser) {
-        this.user = { ...selectedUser, contrasenia: '' };  // Clear password field
+        user.value = { ...selectedUser, contrasenia: '' }; // Clear password field
       }
-    },
-    async updateUser() {
+    };
+
+    const updateUser = async () => {
       try {
-        const response = await axios.put(`/usuario/${this.selectedRut}`, this.user);
-        this.message = response.data.message;
+        const response = await axios.put(`/usuario/${selectedRut.value}`, user.value);
+        message.value = response.data.message;
       } catch (error) {
-        this.message = error.response.data.message || 'Error al actualizar usuario';
+        message.value = error.response.data.message || 'Error al actualizar usuario';
       }
-    }
-  }
+    };
+
+    fetchUsers();
+
+    return {
+      users,
+      selectedRut,
+      user,
+      message,
+      fetchUsers,
+      populateUserData,
+      updateUser,
+    };
+  },
 };
 </script>
 
-
-<style>
-form{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: end;
-    gap: 20px;
-    margin-top: 15px;
+<style scoped>
+*{
+  box-sizing: border-box;
 }
-input{
-    width: 100%;
-    height: 40px;
-    padding: 5px 10px;
-    background-color: aliceblue;
-    border: black;
+h1 {
+  font-size: 3em;
+  line-height: 1.1;
+}
+.q-pa-md {
+  max-width: 400px;
+  margin: auto;
+}
+.q-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  align-content: center;
+  justify-items: center;
+  grid-area: f;
+}
+.q-input,
+.q-select {
+  width: 100%;
+}
+.q-btn {
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 500;
+  padding: 10px;
 }
 </style>
