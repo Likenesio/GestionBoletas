@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import Dashboard from '../components/dashboard/Dashboard.vue';
 import Login from '../components/Login.vue';
 import ChangePassword from '../components/ChangePassword.vue';
 import Register from '../components/user/Register.vue';
@@ -10,6 +11,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     { path: '/login', component: Login },
+    { path: '/dashboard', component: Dashboard,  meta: { requiresAuth: true }},
     { path: '/change-password/:_id', component: ChangePassword, meta: { requiresAuth: true } },
     { path: '/register', component: Register, meta: { requiresAuth: true } },
     { path: '/userslist', component: UserList, meta: { requiresAuth: true } },

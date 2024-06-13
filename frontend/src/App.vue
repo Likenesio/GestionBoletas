@@ -1,12 +1,13 @@
 <template>
   <div id="app">
     <nav v-if="isAuthenticated">
-      <router-link to="/register">Registrar</router-link>
+      <router-link to="/dashboard">Dashboard</router-link>
+     <!--  <router-link to="/register">Registrar</router-link>
       <router-link to="/userslist">Listar Usuarios</router-link>
       <router-link to="/update">Actualizar Usuario</router-link>
       <router-link to="/delete">Eliminar Usuario</router-link>
       <router-link :to="`/change-password/${userId}`">Cambiar Contraseña</router-link>
-      <button @click="logout">Cerrar Sesión</button>
+      <button @click="logout">Cerrar Sesión</button> -->
     </nav>
     <router-view></router-view>
   </div>
@@ -31,7 +32,7 @@ export default {
         const decoded = JSON.parse(atob(token.split('.')[1]));
         this.userId = decoded.userId;
         this.isAuthenticated = true;
-        this.$router.push('/register'); // Redirigir al dashboard si está autenticado
+        this.$router.push('/dashboard'); // Redirigir al dashboard si está autenticado
       } else {
         this.$router.push('/login'); // Redirigir a login si no está autenticado
       }
@@ -47,10 +48,4 @@ export default {
 </script>
 
 <style>
-nav {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  align-items: center;
-}
 </style>

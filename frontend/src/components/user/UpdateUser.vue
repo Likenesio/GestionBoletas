@@ -71,7 +71,6 @@
 
 
 <style>
-@import url(../../style.css);
 form{
     display: flex;
     flex-direction: column;

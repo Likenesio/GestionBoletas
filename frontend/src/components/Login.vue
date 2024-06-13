@@ -1,5 +1,6 @@
-<template>
-    <div>
+<template id="form">
+  <div class="page">
+    <div class="contenedor">
       <h1>Iniciar Sesión</h1>
       <form @submit.prevent="login">
         <input v-model="correo" type="email" placeholder="Correo" required />
@@ -8,7 +9,8 @@
       </form>
       <div v-if="message">{{ message }}</div>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
   import axios from '../axios'; // Asegúrate de tener configurado axios
@@ -42,6 +44,30 @@
   </script>
   
   <style scoped>
-  /* Estilos para tu componente */
-  </style>
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 5px;
+  }
   
+  form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input {
+  padding: 2px 5px;
+}
+.message {
+  color: red;
+}
+</style>
