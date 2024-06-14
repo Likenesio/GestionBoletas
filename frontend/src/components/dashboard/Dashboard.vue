@@ -133,7 +133,7 @@
             <q-avatar size="56px" class="q-mb-sm">
               <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
             </q-avatar>
-            <div class="text-weight-bold">Pablo González</div>
+            <div class="text-weight-bold">{{nombre}} {{ apellido }}</div>
             <div>@{{ rol }}</div>
           </div>
         </q-img>
@@ -178,9 +178,10 @@ export default {
       const token = localStorage.getItem("token");
       if (token) {
         const decoded = JSON.parse(atob(token.split(".")[1]));
-        console.log(decoded)
         this.userId = decoded.userId;
         this.rol = decoded.rol;
+        this.nombre = decoded.nombre;
+        this.apellido = decoded.apellido;
         this.isAuthenticated = true;
         this.$router.push("/dashboard"); // Redirigir al dashboard si está autenticado
       } else {

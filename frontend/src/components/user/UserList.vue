@@ -32,6 +32,7 @@ export default {
 
     const columns = [
       { name: 'nombre_usuario', required: true, label: 'Nombre de Usuario', align: 'left', field: row => row.nombre_usuario, format: val => `${val}`, sortable: true },
+      { name: 'apellido',  required: true, label: 'Apellido', align: 'left', field: row => row.apellido, format: val => `${val}`, sortable: true },
       { name: 'correo', label: 'Correo', align: 'left', field: row => row.correo, sortable: true }
     ];
 
