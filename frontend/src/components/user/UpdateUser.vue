@@ -1,14 +1,22 @@
 <template>
-  <div id="user-management">
-    <h1>Actualizar Usuario</h1>
+  <div id="user-management" class="q-pa-md">
+    <h2>Actualizar Usuario</h2>
     <div>
-      <label for="user-select">Seleccionar Usuario:</label>
-      <select id="user-select" v-model="selectedUserId" @change="fetchUserById">
-        <option value="">Selecciona un usuario</option>
-        <option v-for="user in users" :key="user._id" :value="user._id">
-          {{ user.nombre_usuario }} {{ user.apellido }}
-        </option>
-      </select>
+      <q-btn-dropdown color="pink" label="Seleccionar Usuario" dropdown-icon="arrow_drop_down">
+        <q-list>
+          <q-item 
+            v-for="user in users" 
+            :key="user._id" 
+            clickable 
+            v-close-popup 
+            @click="selectUser(user)"
+          >
+            <q-item-section>
+              <q-item-label>{{ user.nombre_usuario }} {{ user.apellido }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-btn-dropdown>
     </div>
     <div v-if="selectedUser">
       <form @submit.prevent="updateUser">
@@ -23,10 +31,6 @@
         <div>
           <label>Apellido:</label>
           <input v-model="selectedUser.apellido" type="text" required />
-        </div>
-        <div>
-          <label>Contraseña:</label>
-          <input v-model="selectedUser.contrasenia" type="password" />
         </div>
         <div>
           <label>Teléfono:</label>
@@ -48,67 +52,89 @@
 
 <script>
 import axios from '../../axios';
+import { ref } from 'vue';
 
 export default {
-  data() {
-    return {
-      users: [],
-      selectedUserId: '',
-      selectedUser: null
-    };
-  },
-  methods: {
-    async fetchUsers() {
+  setup() {
+    const users = ref([]);
+    const selectedUserId = ref('');
+    const selectedUser = ref(null);
+
+    const fetchUsers = async () => {
       try {
         const response = await axios.get('/usuario'); // Endpoint correcto para listar usuarios
-        console.log(response)
-        this.users = response.data.usuario;
+        users.value = response.data.usuario;
       } catch (error) {
         console.error('Error fetching users:', error);
       }
-    },
-    async fetchUserById() {
-      if (this.selectedUserId) {
-        try {
-          const response = await axios.get(`/usuario/${this.selectedUserId}`); // Endpoint para obtener usuario por ID
-          this.selectedUser = response.data.usuario; // Asegúrate de que esto coincide con la estructura de tu respuesta
-        } catch (error) {
-          console.error('Error fetching user:', error);
-        }
-      } else {
-        this.selectedUser = null;
-      }
-    },
-    async updateUser() {
+    };
+
+    const selectUser = (user) => {
+      selectedUser.value = user;
+    };
+
+    const updateUser = async () => {
       try {
         const updatedUser = {
-          rut_usuario: this.selectedUser.rut_usuario,
-          nombre_usuario: this.selectedUser.nombre_usuario,
-          apellido: this.selectedUser.apellido,
-          contrasenia: this.selectedUser.contrasenia,
-          fono: this.selectedUser.fono,
-          correo: this.selectedUser.correo,
-          rol: this.selectedUser.rol
+          rut_usuario: selectedUser.value.rut_usuario,
+          nombre_usuario: selectedUser.value.nombre_usuario,
+          apellido: selectedUser.value.apellido,
+          contrasenia: selectedUser.value.contrasenia,
+          fono: selectedUser.value.fono,
+          correo: selectedUser.value.correo,
+          rol: selectedUser.value.rol,
         };
         
         // Enviar datos de actualización al servidor
-        const response = await axios.put(`/usuario/${this.selectedUser._id}`, updatedUser);
+        const response = await axios.put(`/usuario/${selectedUser.value._id}`, updatedUser);
         alert(response.data.message);
         
         // Actualizar la lista de usuarios con los datos actualizados
-        this.fetchUsers();
-        this.selectedUserId = '';
-        this.selectedUser = null;
+        fetchUsers();
+        selectedUser.value = null;
       } catch (error) {
         console.error('Error updating user:', error);
       }
-    }
+    };
+
+    fetchUsers();
+
+    return {
+      users,
+      selectedUserId,
+      selectedUser,
+      fetchUsers,
+      selectUser,
+      updateUser,
+    };
   },
-  mounted() {
-    this.fetchUsers();
-  }
 };
 </script>
 
 <style>
+/* Añadir algunos estilos básicos */
+#user-management {
+  font-family: Arial, sans-serif;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+form {
+  margin-top: 20px;
+}
+
+form div {
+  margin-bottom: 10px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+form input {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
 </style>
