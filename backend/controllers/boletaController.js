@@ -51,5 +51,18 @@ const deleteBoleta = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const verificarNumeroBoleta = async (req, res) => {
+  try {
+    const { numero } = req.params;
+    const boleta = await Boleta.findOne({ numero });
+    if (boleta) {
+      res.status(200).json({ exists: true });
+    } else {
+      res.status(200).json({ exists: false });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
-module.exports = { createBoleta, getAllBoletas, getBoletaById, updateBoleta, deleteBoleta };
+module.exports = { createBoleta, getAllBoletas, getBoletaById, updateBoleta, deleteBoleta, verificarNumeroBoleta };

@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <q-form @submit.prevent="submitBoleta">
+    <q-form @submit.prevent="confirmSubmit">
       <q-card>
         <q-card-section>
           <q-input
@@ -105,6 +105,19 @@
           />
         </q-card-actions>
       </q-card>
+
+      <q-dialog v-model="confirmDialog">
+        <q-card>
+          <q-card-section class="row items-center">
+            <q-icon name="warning" color="warning" size="32px" />
+            <span class="q-ml-sm">¿Está seguro de registrar esta boleta?</span>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="Cancelar" v-close-popup />
+            <q-btn color="primary" flat label="Confirmar" @click="submitBoleta" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </q-form>
   </q-page>
 </template>
@@ -129,7 +142,8 @@ export default {
       pagination: {
         page: 1,
         rowsPerPage: 5
-      }
+      },
+      confirmDialog: false
     };
   },
   created() {
@@ -141,7 +155,12 @@ export default {
         const response = await axios.get('/proveedor');
         this.proveedores = response.data.proveedor;
       } catch (error) {
-        console.error('Error fetching proveedores:', error);
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Error fetching proveedores: ' + error.message,
+          icon: 'report_problem'
+        });
       }
     },
     addProducto() {
@@ -149,6 +168,38 @@ export default {
     },
     removeProducto(producto) {
       this.productos = this.productos.filter(p => p !== producto);
+    },
+    async confirmSubmit() {
+      if (this.productos.length === 0 || this.productos.some(p => !p.nombre || !p.precio_unitario || !p.cantidad)) {
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Debe agregar al menos un producto con todos sus campos llenos.',
+          icon: 'report_problem'
+        });
+        return;
+      }
+
+      try {
+        const response = await axios.get(`/boleta/exists/${this.numero}`);
+        if (response.data.exists) {
+          this.$q.notify({
+            color: 'negative',
+            position: 'top',
+            message: 'El número de boleta ya existe.',
+            icon: 'report_problem'
+          });
+          return;
+        }
+        this.confirmDialog = true;
+      } catch (error) {
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Error verifying boleta number: ' + error.message,
+          icon: 'report_problem'
+        });
+      }
     },
     async submitBoleta() {
       const boletaData = {
@@ -159,14 +210,24 @@ export default {
       };
       try {
         const response = await axios.post('/boleta', boletaData);
-        console.log('Boleta creada:', response.data);
+        this.$q.notify({
+          color: 'positive',
+          position: 'top',
+          message: 'Boleta creada exitosamente',
+          icon: 'check_circle'
+        });
         // Reset form
         this.numero = '';
         this.fecha = '';
         this.proveedor = '';
         this.productos = [];
       } catch (error) {
-        console.error('Error creating boleta:', error);
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Error creating boleta: ' + error.message,
+          icon: 'report_problem'
+        });
       }
     }
   }

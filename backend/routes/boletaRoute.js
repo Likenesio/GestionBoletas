@@ -19,4 +19,7 @@ api.put("/boleta/:id", boletaController.updateBoleta);
 // Eliminar una boleta
 api.delete("/boleta/:id", boletaController.deleteBoleta);
 
+//verifica el numero de boleta
+api.get('/boleta/exists/:numero', boletaController.verificarNumeroBoleta);
+
 module.exports = api;
