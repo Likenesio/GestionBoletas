@@ -1,7 +1,5 @@
 <template>
   <q-layout view="hHh Lpr fFf">
-
-    <!-- Contenido principal -->
     <q-page-container>
       <q-page class="login-page">
         <q-card class="login-card">
@@ -74,7 +72,7 @@ export default {
 }
 
 .login-card {
-  max-width: 400px;
+  max-width: 500px;
   width: 100%;
 }
 
@@ -82,6 +80,7 @@ export default {
   font-size: 1.875rem; /* 30px */
   line-height: 1.33;
   margin-bottom: 1rem;
+  font-weight: 700;
 }
 
 .q-mt-md {
