@@ -32,7 +32,7 @@
           :rules="[ val => val && val.length > 0 || 'Please enter Apellido']"
         />
         <div>
-          <q-btn label="Registrar" type="submit" color="primary" />
+          <q-btn label="Registrar" type="submit" color="green-10" />
         </div>
       </q-form>
   
@@ -93,9 +93,10 @@
   h1 {
     font-size: 3em;
     line-height: 1.1;
+    font-weight: 700;
   }
   .q-pa-md {
-    max-width: 400px;
+    max-width: 600px;
     margin: auto;
   }
   .q-banner {

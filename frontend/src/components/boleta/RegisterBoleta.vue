@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <h1>Ingresar Boleta</h1>
+    <h1 >Ingresar Boleta</h1>
     <q-form @submit.prevent="confirmSubmit">
       <q-card>
         <q-card-section>
@@ -125,9 +125,9 @@
 
         <q-card-actions align="right">
           <q-btn
-            color="primary"
+            color="green-10"
             type="submit"
-            label="Crear Boleta"
+            label="Ingresar Boleta"
           />
         </q-card-actions>
       </q-card>
@@ -285,6 +285,7 @@ export default {
 h1 {
   font-size: 3em;
   line-height: 1.1;
+  font-weight: 700;
 }
 .q-page {
   max-width: 600px;

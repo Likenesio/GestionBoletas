@@ -64,7 +64,7 @@
           lazy-rules
           :rules="[ val => !!val || 'Este campo es requerido']"
         />
-        <q-btn label="Actualizar" type="submit" color="primary" />
+        <q-btn label="Actualizar" type="submit" color="green-10" />
       </q-form>
     </div>
   </div>
@@ -156,13 +156,13 @@ export default {
   box-sizing: border-box;
 }
 #user-management {
-  font-family: Arial, sans-serif;
-  max-width: 400px;
+  max-width: 600px;
   margin: 0 auto;
 }
 h1 {
   font-size: 3em;
   line-height: 1.1;
+  font-weight: 700;
 }
 form {
   margin-top: 20px;

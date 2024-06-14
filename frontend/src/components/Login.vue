@@ -10,7 +10,7 @@
             <q-form @submit="login">
               <q-input v-model="correo" type="email" label="Correo" dense outlined />
               <q-input style="margin-top: 5px;" v-model="contrasenia" type="password" label="Contraseña" dense outlined />
-              <q-btn type="submit" color="primary" label="Iniciar Sesión" class="q-mt-md" />
+              <q-btn type="submit" color="green-10" label="Iniciar Sesión" class="q-mt-md" />
             </q-form>
             <q-space />
             <div v-if="message" class="text-negative">{{ message }}</div>
