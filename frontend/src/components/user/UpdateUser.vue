@@ -1,6 +1,6 @@
 <template>
   <div id="user-management" class="q-pa-md">
-    <h2>Actualizar Usuario</h2>
+    <h1>Actualizar Usuario</h1>
     <div>
       <q-btn-dropdown color="pink" label="Seleccionar Usuario" dropdown-icon="arrow_drop_down">
         <q-list>
@@ -18,7 +18,7 @@
         </q-list>
       </q-btn-dropdown>
     </div>
-    <div v-if="selectedUser">
+    <div class="mg-t" v-if="selectedUser">
       <q-form @submit.prevent="updateUser" class="q-gutter-md">
         <q-input
           filled
@@ -152,13 +152,22 @@ export default {
 
 <style>
 /* Añadir algunos estilos básicos */
+*{
+  box-sizing: border-box;
+}
 #user-management {
   font-family: Arial, sans-serif;
-  max-width: 600px;
+  max-width: 400px;
   margin: 0 auto;
 }
-
+h1 {
+  font-size: 3em;
+  line-height: 1.1;
+}
 form {
   margin-top: 20px;
+}
+.mg-t{
+  margin-top: 40px;
 }
 </style>

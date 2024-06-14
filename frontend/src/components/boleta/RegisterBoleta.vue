@@ -1,5 +1,6 @@
 <template>
   <q-page padding>
+    <h1>Ingresar Boleta</h1>
     <q-form @submit.prevent="confirmSubmit">
       <q-card>
         <q-card-section>
@@ -277,6 +278,13 @@ export default {
 </script>
 
 <style scoped>
+*{
+  box-sizing: border-box;
+}
+h1 {
+  font-size: 3em;
+  line-height: 1.1;
+}
 .q-page {
   max-width: 600px;
   margin: 0 auto;
