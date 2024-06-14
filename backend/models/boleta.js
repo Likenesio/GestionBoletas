@@ -16,6 +16,10 @@ const productoSchema = new schema({
     type: Number,
     required: true,
   },
+  unidad_medida: {
+    type: String,
+    required: true,
+  },
 });
 
 const boletaSchema = new schema({
@@ -26,6 +30,10 @@ const boletaSchema = new schema({
   productos: [productoSchema],
   fecha: {
     type: Date,
+    required: true,
+  },
+  total: {
+    type: Number,
     required: true,
   },
   proveedor: [

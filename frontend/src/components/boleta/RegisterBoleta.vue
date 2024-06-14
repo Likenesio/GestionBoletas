@@ -61,6 +61,8 @@
                   label="Precio Unitario"
                   dense
                   outlined
+                  type="number"
+                  @input="calculateTotal"
                 />
               </q-td>
             </template>
@@ -69,6 +71,19 @@
                 <q-input
                   v-model="props.row.cantidad"
                   label="Cantidad"
+                  dense
+                  outlined
+                  type="number"
+                  @input="calculateTotal"
+                />
+              </q-td>
+            </template>
+            <template v-slot:body-cell-unidad_medida="props">
+              <q-td :props="props">
+                <q-select
+                  v-model="props.row.unidad_medida"
+                  :options="['KG', 'CAJA', 'UND']"
+                  label="Unidad Medida"
                   dense
                   outlined
                 />
@@ -94,6 +109,15 @@
             @click="addProducto"
             dense
             flat
+          />
+        </q-card-section>
+
+        <q-card-section>
+          <q-input
+            filled
+            v-model="total"
+            label="Total"
+            readonly
           />
         </q-card-section>
 
@@ -133,10 +157,12 @@ export default {
       proveedor: '',
       productos: [],
       proveedores: [],
+      total: 0,
       columns: [
         { name: 'nombre', required: true, label: 'Nombre', align: 'left' },
         { name: 'precio_unitario', required: true, label: 'Precio Unitario', align: 'left' },
         { name: 'cantidad', required: true, label: 'Cantidad', align: 'left' },
+        { name: 'unidad_medida', required: true, label: 'Unidad Medida', align: 'left' },
         { name: 'acciones', label: 'Acciones', align: 'center' }
       ],
       pagination: {
@@ -164,13 +190,21 @@ export default {
       }
     },
     addProducto() {
-      this.productos.push({ nombre: '', precio_unitario: '', cantidad: '' });
+      this.productos.push({ nombre: '', precio_unitario: '', cantidad: '', unidad_medida: '' });
     },
     removeProducto(producto) {
       this.productos = this.productos.filter(p => p !== producto);
+      this.calculateTotal();
+    },
+    calculateTotal() {
+      this.total = this.productos.reduce((acc, producto) => {
+        const precioUnitario = parseFloat(producto.precio_unitario) || 0;
+        const cantidad = parseInt(producto.cantidad) || 0;
+        return acc + (precioUnitario * cantidad);
+      }, 0);
     },
     async confirmSubmit() {
-      if (this.productos.length === 0 || this.productos.some(p => !p.nombre || !p.precio_unitario || !p.cantidad)) {
+      if (this.productos.length === 0 || this.productos.some(p => !p.nombre || !p.precio_unitario || !p.cantidad || !p.unidad_medida)) {
         this.$q.notify({
           color: 'negative',
           position: 'top',
@@ -206,7 +240,8 @@ export default {
         numero: this.numero,
         fecha: this.fecha,
         proveedor: this.proveedor,
-        productos: this.productos
+        productos: this.productos,
+        total: this.total
       };
       try {
         const response = await axios.post('/boleta', boletaData);
@@ -221,6 +256,7 @@ export default {
         this.fecha = '';
         this.proveedor = '';
         this.productos = [];
+        this.total = 0;
       } catch (error) {
         this.$q.notify({
           color: 'negative',
@@ -229,6 +265,12 @@ export default {
           icon: 'report_problem'
         });
       }
+    }
+  },
+  watch: {
+    productos: {
+      handler: 'calculateTotal',
+      deep: true
     }
   }
 };

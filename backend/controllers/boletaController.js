@@ -4,8 +4,8 @@ const Proveedor = require("../models/proveedor");
 
 const createBoleta = async (req, res) => {
   try {
-    const { numero, productos, fecha, proveedor } = req.body;
-    const newBoleta = new Boleta({ numero, productos, fecha, proveedor });
+    const { numero, productos, fecha, proveedor, total } = req.body;
+    const newBoleta = new Boleta({ numero, productos, fecha, proveedor, total });
     await newBoleta.save();
     res.status(201).json(newBoleta);
   } catch (error) {
