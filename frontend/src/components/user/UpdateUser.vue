@@ -22,7 +22,7 @@
       <form @submit.prevent="updateUser">
         <div>
           <label>RUT:</label>
-          <input v-model="selectedUser.rut_usuario" type="text" required />
+          <input v-model="selectedUser.rut_usuario" type="text" required disabled />
         </div>
         <div>
           <label>Nombre:</label>
