@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page>
     <h1>Ingresar Boleta</h1>
     <q-form @submit.prevent="confirmSubmit">
       <q-card>
@@ -37,6 +37,7 @@
 
         <q-card-section>
           <q-table
+            class="input-name"
             title="Productos"
             :rows="productos"
             :columns="columns"
@@ -287,6 +288,7 @@ h1 {
 }
 .q-page {
   max-width: 600px;
+  min-width: 320;
   margin: 0 auto;
 }
 </style>

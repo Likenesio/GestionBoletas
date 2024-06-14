@@ -131,7 +131,7 @@
         >
           <div class="absolute-bottom bg-transparent">
             <q-avatar size="56px" class="q-mb-sm">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+              <img src="../../assets/images/batman_hero.webp" />
             </q-avatar>
             <div class="text-weight-bold">{{nombre}} {{ apellido }}</div>
             <div>@{{ rol }}</div>
