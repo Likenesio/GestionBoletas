@@ -178,6 +178,7 @@ export default {
       const token = localStorage.getItem("token");
       if (token) {
         const decoded = JSON.parse(atob(token.split(".")[1]));
+        console.log(decoded)
         this.userId = decoded.userId;
         this.rol = decoded.rol;
         this.nombre = decoded.nombre;

@@ -143,7 +143,7 @@ const login = async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: usuario._id, rol: usuario.rol },
+      { userId: usuario._id, rol: usuario.rol, nombre:usuario.nombre_usuario, apellido:usuario.apellido },
       "penelope",
       { expiresIn: "7d" }
     );
