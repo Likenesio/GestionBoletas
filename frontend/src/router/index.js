@@ -7,7 +7,7 @@ import UserList from '../components/user/UserList.vue';
 import UpdateUser from '../components/user/UpdateUser.vue';
 import DeleteUser from '../components/user/DeleteUser.vue';
 import RegisterBoleta from '../components/boleta/RegisterBoleta.vue';
-/* import BoletaList from '../components/boleta/BoletaList.vue'; */
+import BoletaList from '../components/boleta/BoletaList.vue';
 /* import UpdateBoleta from '../components/boleta/UpdateBoleta.vue'; */
 /* import RegisterProveedor from '../components/proveedor/RegisterProveedor.vue';
 import ProveedorList from '../components/proveedor/ProveedorList.vue';
@@ -26,8 +26,8 @@ const router = createRouter({
         { path: 'userslist', component: UserList },
         { path: 'update', component: UpdateUser },
         { path: 'register-boleta', component: RegisterBoleta },
-        /* { path: 'boleta-list', component: BoletaList },
-        { path: 'update-boleta', component: UpdateBoleta }, */
+        { path: 'boleta-list', component: BoletaList },
+        /* { path: 'update-boleta', component: UpdateBoleta }, */
         /* { path: 'register-proveedor', component: RegisterProveedor },
         { path: 'proveedor-list', component: ProveedorList },
         { path: 'update-proveedor', component: UpdateProveedor }, */
