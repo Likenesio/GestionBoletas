@@ -1,46 +1,114 @@
 <template>
-    <div>
-      <form @submit.prevent="submitBoleta">
-        <div>
-          <label for="numero">Número:</label>
-          <input type="number" v-model="numero" required />
-        </div>
-        <div>
-          <label for="fecha">Fecha:</label>
-          <input type="date" v-model="fecha" required />
-        </div>
-        <div>
-          <label for="proveedor">Proveedor:</label>
-          <select v-model="proveedor" required>
-            <option v-for="prov in proveedores" :key="prov._id" :value="prov._id">{{ prov.nombre }}</option>
-          </select>
-        </div>
-        <div>
-          <label>Productos:</label>
-          <table>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Precio Unitario</th>
-                <th>Cantidad</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(producto, index) in productos" :key="index">
-                <td><input type="text" v-model="producto.nombre" required /></td>
-                <td><input type="number" v-model="producto.precio_unitario" required /></td>
-                <td><input type="number" v-model="producto.cantidad" required /></td>
-                <td><button @click="removeProducto(index)">Eliminar</button></td>
-              </tr>
-            </tbody>
-          </table>
-          <button @click="addProducto">Agregar Producto</button>
-        </div>
-        <button type="submit">Crear Boleta</button>
-      </form>
-    </div>
-  </template>
+  <q-page padding>
+    <q-form @submit.prevent="submitBoleta">
+      <q-card>
+        <q-card-section>
+          <q-input
+            filled
+            v-model="numero"
+            label="Número"
+            type="number"
+            required
+          />
+        </q-card-section>
+
+        <q-card-section>
+          <q-input
+            filled
+            v-model="fecha"
+            label="Fecha"
+            type="date"
+            required
+          />
+        </q-card-section>
+
+        <q-card-section>
+          <q-select
+            filled
+            v-model="proveedor"
+            label="Proveedor"
+            :options="proveedores"
+            option-label="nombre"
+            option-value="_id"
+            required
+          />
+        </q-card-section>
+
+        <q-card-section>
+          <q-table
+            title="Productos"
+            :rows="productos"
+            :columns="columns"
+            row-key="nombre"
+            flat
+            :pagination.sync="pagination"
+          >
+            <template v-slot:body-cell-nombre="props">
+              <q-td :props="props">
+                <q-input
+                  v-model="props.row.nombre"
+                  label="Nombre"
+                  dense
+                  outlined
+                  autofocus
+                />
+              </q-td>
+            </template>
+            <template v-slot:body-cell-precio_unitario="props">
+              <q-td :props="props">
+                <q-input
+                  v-model="props.row.precio_unitario"
+                  label="Precio Unitario"
+                  dense
+                  outlined
+                />
+              </q-td>
+            </template>
+            <template v-slot:body-cell-cantidad="props">
+              <q-td :props="props">
+                <q-input
+                  v-model="props.row.cantidad"
+                  label="Cantidad"
+                  dense
+                  outlined
+                />
+              </q-td>
+            </template>
+            <template v-slot:body-cell-acciones="props">
+              <q-td :props="props">
+                <q-btn
+                  color="negative"
+                  icon="delete"
+                  @click="removeProducto(props.row)"
+                  dense
+                  flat
+                />
+              </q-td>
+            </template>
+          </q-table>
+
+          <q-btn
+            color="primary"
+            label="Agregar Producto"
+            icon="add"
+            @click="addProducto"
+            dense
+            flat
+          />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            color="primary"
+            type="submit"
+            label="Crear Boleta"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-form>
+  </q-page>
+</template>
+
 <script>
 import axios from '../../axios.js';
 
@@ -51,7 +119,17 @@ export default {
       fecha: '',
       proveedor: '',
       productos: [],
-      proveedores: []
+      proveedores: [],
+      columns: [
+        { name: 'nombre', required: true, label: 'Nombre', align: 'left' },
+        { name: 'precio_unitario', required: true, label: 'Precio Unitario', align: 'left' },
+        { name: 'cantidad', required: true, label: 'Cantidad', align: 'left' },
+        { name: 'acciones', label: 'Acciones', align: 'center' }
+      ],
+      pagination: {
+        page: 1,
+        rowsPerPage: 5
+      }
     };
   },
   created() {
@@ -61,18 +139,16 @@ export default {
     async fetchProveedores() {
       try {
         const response = await axios.get('/proveedor');
-        console.log(response)
         this.proveedores = response.data.proveedor;
-        console.log(this.proveedores)
       } catch (error) {
         console.error('Error fetching proveedores:', error);
       }
     },
     addProducto() {
-      this.productos.push({ nombre: '', precio_unitario: '', cantidad: 1 });
+      this.productos.push({ nombre: '', precio_unitario: '', cantidad: '' });
     },
-    removeProducto(index) {
-      this.productos.splice(index, 1);
+    removeProducto(producto) {
+      this.productos = this.productos.filter(p => p !== producto);
     },
     async submitBoleta() {
       const boletaData = {
@@ -96,3 +172,10 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.q-page {
+  max-width: 600px;
+  margin: 0 auto;
+}
+</style>
