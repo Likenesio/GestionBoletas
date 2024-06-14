@@ -75,9 +75,6 @@
     </q-form>
 
     <div v-if="message" class="q-mt-md">
-      <q-banner dense>
-        {{ message }}
-      </q-banner>
     </div>
   </div>
 </template>

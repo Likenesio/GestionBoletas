@@ -19,33 +19,53 @@
       </q-btn-dropdown>
     </div>
     <div v-if="selectedUser">
-      <form @submit.prevent="updateUser">
-        <div>
-          <label>RUT:</label>
-          <input v-model="selectedUser.rut_usuario" type="text" required disabled />
-        </div>
-        <div>
-          <label>Nombre:</label>
-          <input v-model="selectedUser.nombre_usuario" type="text" required />
-        </div>
-        <div>
-          <label>Apellido:</label>
-          <input v-model="selectedUser.apellido" type="text" required />
-        </div>
-        <div>
-          <label>Teléfono:</label>
-          <input v-model="selectedUser.fono" type="text" required />
-        </div>
-        <div>
-          <label>Correo:</label>
-          <input v-model="selectedUser.correo" type="email" required />
-        </div>
-        <div>
-          <label>Rol:</label>
-          <input v-model="selectedUser.rol" type="text" required />
-        </div>
-        <button type="submit">Actualizar</button>
-      </form>
+      <q-form @submit.prevent="updateUser" class="q-gutter-md">
+        <q-input
+          filled
+          v-model="selectedUser.rut_usuario"
+          label="RUT"
+          lazy-rules
+          :rules="[ val => !!val || 'Este campo es requerido']"
+          disabled
+        />
+        <q-input
+          filled
+          v-model="selectedUser.nombre_usuario"
+          label="Nombre"
+          lazy-rules
+          :rules="[ val => !!val || 'Este campo es requerido']"
+        />
+        <q-input
+          filled
+          v-model="selectedUser.apellido"
+          label="Apellido"
+          lazy-rules
+          :rules="[ val => !!val || 'Este campo es requerido']"
+        />
+        <q-input
+          filled
+          v-model="selectedUser.fono"
+          label="Teléfono"
+          lazy-rules
+          :rules="[ val => !!val || 'Este campo es requerido']"
+        />
+        <q-input
+          filled
+          v-model="selectedUser.correo"
+          label="Correo"
+          type="email"
+          lazy-rules
+          :rules="[ val => !!val || 'Este campo es requerido']"
+        />
+        <q-input
+          filled
+          v-model="selectedUser.rol"
+          label="Rol"
+          lazy-rules
+          :rules="[ val => !!val || 'Este campo es requerido']"
+        />
+        <q-btn label="Actualizar" type="submit" color="primary" />
+      </q-form>
     </div>
   </div>
 </template>
@@ -53,9 +73,11 @@
 <script>
 import axios from '../../axios';
 import { ref } from 'vue';
+import { useQuasar } from 'quasar';
 
 export default {
   setup() {
+    const $q = useQuasar();
     const users = ref([]);
     const selectedUserId = ref('');
     const selectedUser = ref(null);
@@ -66,6 +88,12 @@ export default {
         users.value = response.data.usuario;
       } catch (error) {
         console.error('Error fetching users:', error);
+        $q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'warning',
+          message: 'Error al obtener los usuarios'
+        });
       }
     };
 
@@ -87,13 +115,24 @@ export default {
         
         // Enviar datos de actualización al servidor
         const response = await axios.put(`/usuario/${selectedUser.value._id}`, updatedUser);
-        alert(response.data.message);
+        $q.notify({
+          color: 'green-4',
+          textColor: 'white',
+          icon: 'cloud_done',
+          message: response.data.message
+        });
         
         // Actualizar la lista de usuarios con los datos actualizados
         fetchUsers();
         selectedUser.value = null;
       } catch (error) {
         console.error('Error updating user:', error);
+        $q.notify({
+          color: 'red-5',
+          textColor: 'white',
+          icon: 'warning',
+          message: 'Error al actualizar el usuario'
+        });
       }
     };
 
@@ -121,20 +160,5 @@ export default {
 
 form {
   margin-top: 20px;
-}
-
-form div {
-  margin-bottom: 10px;
-}
-
-form label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-form input {
-  width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
 }
 </style>
