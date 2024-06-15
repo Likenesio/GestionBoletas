@@ -32,15 +32,47 @@ const getBoletaById = async (req, res) => {
   }
 };
 
-const updateBoleta = async (req, res) => {
+const actualizarBoleta = async (req, res) => {
+  const boletaId = req.params.id;
+
   try {
-    const updatedBoleta = await Boleta.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate("proveedor");
-    if (!updatedBoleta) return res.status(404).json({ message: "Boleta no encontrada" });
-    res.status(200).json(updatedBoleta);
+    const {
+      numero,
+      productos,
+      fecha,
+      estado,
+      total,
+      proveedor // Si se necesita actualizar el proveedor también
+    } = req.body;
+
+    // Validar que productos sea un array válido (en caso de ser necesario)
+
+    const updatedBoleta = await Boleta.findByIdAndUpdate(
+      boletaId,
+      {
+        numero,
+        productos,
+        fecha,
+        estado,
+        total,
+        proveedor // Asegúrate de que el nombre del campo en req.body coincida con el nombre en el esquema
+      },
+      { new: true }
+    ).populate('proveedor'); // Asegúrate de que 'proveedor' sea un campo de referencia correctamente definido en el esquema
+
+    if (!updatedBoleta) {
+      return res.status(404).json({ message: 'Boleta no encontrada' });
+    }
+
+    res.status(200).json({
+      mensaje: 'Boleta actualizada exitosamente',
+      boleta: updatedBoleta
+    });
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ message: 'Error al actualizar la boleta', error: error.message });
   }
 };
+
 
 const deleteBoleta = async (req, res) => {
   try {
@@ -65,4 +97,4 @@ const verificarNumeroBoleta = async (req, res) => {
   }
 };
 
-module.exports = { createBoleta, getAllBoletas, getBoletaById, updateBoleta, deleteBoleta, verificarNumeroBoleta };
+module.exports = { createBoleta, getAllBoletas, getBoletaById, actualizarBoleta, deleteBoleta, verificarNumeroBoleta };

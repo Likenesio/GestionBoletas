@@ -14,7 +14,7 @@ api.get("/boleta", boletaController.getAllBoletas);
 api.get("/boleta/:id", boletaController.getBoletaById);
 
 // Actualizar una boleta
-api.put("/boleta/:id", boletaController.updateBoleta);
+api.put("/boleta/:id", boletaController.actualizarBoleta);
 
 // Eliminar una boleta
 api.delete("/boleta/:id", boletaController.deleteBoleta);
