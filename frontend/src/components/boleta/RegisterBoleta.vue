@@ -1,6 +1,5 @@
 <template>
-  <q-page>
-    <h1 >Ingresar Boleta</h1>
+  <q-page padding>
     <q-form @submit.prevent="confirmSubmit">
       <q-card>
         <q-card-section>
@@ -9,6 +8,7 @@
             v-model="numero"
             label="Número"
             type="number"
+            :rules="[val => val > 0 || 'El número debe ser un entero positivo']"
             required
           />
         </q-card-section>
@@ -36,8 +36,17 @@
         </q-card-section>
 
         <q-card-section>
+          <q-select
+            filled
+            v-model="estado"
+            label="Estado"
+            :options="estados"
+            required
+          />
+        </q-card-section>
+
+        <q-card-section>
           <q-table
-            class="input-name"
             title="Productos"
             :rows="productos"
             :columns="columns"
@@ -53,6 +62,7 @@
                   dense
                   outlined
                   autofocus
+                  :rules="[val => !!val || 'El nombre es requerido']"
                 />
               </q-td>
             </template>
@@ -65,6 +75,7 @@
                   outlined
                   type="number"
                   @input="calculateTotal"
+                  :rules="[val => val > 0 || 'Debe ser un entero positivo']"
                 />
               </q-td>
             </template>
@@ -77,6 +88,7 @@
                   outlined
                   type="number"
                   @input="calculateTotal"
+                  :rules="[val => val > 0 || 'Debe ser un entero positivo']"
                 />
               </q-td>
             </template>
@@ -88,6 +100,7 @@
                   label="Unidad Medida"
                   dense
                   outlined
+                  :rules="[val => !!val || 'Unidad de medida es requerida']"
                 />
               </q-td>
             </template>
@@ -125,9 +138,9 @@
 
         <q-card-actions align="right">
           <q-btn
-            color="green-10"
+            color="primary"
             type="submit"
-            label="Ingresar Boleta"
+            label="Crear Boleta"
           />
         </q-card-actions>
       </q-card>
@@ -154,11 +167,12 @@ import axios from '../../axios.js';
 export default {
   data() {
     return {
-      numero: '',
+      numero: 1,
       fecha: '',
       proveedor: '',
       productos: [],
       proveedores: [],
+      estado: 'Pendiente',
       total: 0,
       columns: [
         { name: 'nombre', required: true, label: 'Nombre', align: 'left' },
@@ -171,7 +185,8 @@ export default {
         page: 1,
         rowsPerPage: 5
       },
-      confirmDialog: false
+      confirmDialog: false,
+      estados: ['Pendiente', 'Pagado']
     };
   },
   created() {
@@ -192,7 +207,7 @@ export default {
       }
     },
     addProducto() {
-      this.productos.push({ nombre: '', precio_unitario: '', cantidad: '', unidad_medida: '' });
+      this.productos.push({ nombre: '', precio_unitario: 1, cantidad: 1, unidad_medida: 'KG' });
     },
     removeProducto(producto) {
       this.productos = this.productos.filter(p => p !== producto);
@@ -206,6 +221,16 @@ export default {
       }, 0);
     },
     async confirmSubmit() {
+      if (!this.proveedor) {
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Debe seleccionar un proveedor.',
+          icon: 'report_problem'
+        });
+        return;
+      }
+
       if (this.productos.length === 0 || this.productos.some(p => !p.nombre || !p.precio_unitario || !p.cantidad || !p.unidad_medida)) {
         this.$q.notify({
           color: 'negative',
@@ -243,6 +268,7 @@ export default {
         fecha: this.fecha,
         proveedor: this.proveedor,
         productos: this.productos,
+        estado: this.estado,
         total: this.total
       };
       try {
@@ -254,9 +280,10 @@ export default {
           icon: 'check_circle'
         });
         // Reset form
-        this.numero = '';
+        this.numero = 1;
         this.fecha = '';
         this.proveedor = '';
+        this.estado = 'Pendiente';
         this.productos = [];
         this.total = 0;
       } catch (error) {
@@ -279,17 +306,8 @@ export default {
 </script>
 
 <style scoped>
-*{
-  box-sizing: border-box;
-}
-h1 {
-  font-size: 3em;
-  line-height: 1.1;
-  font-weight: 700;
-}
 .q-page {
   max-width: 600px;
-  min-width: 320;
   margin: 0 auto;
 }
 </style>

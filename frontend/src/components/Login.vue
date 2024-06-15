@@ -1,6 +1,6 @@
 <template>
-  <q-layout view="hHh Lpr fFf">
-    <q-page-container>
+  <q-layout class="bg-image" view="hHh Lpr fFf">
+    <q-page-container style="padding: 0px 5px;">
       <q-page class="login-page">
         <q-card class="login-card">
           <q-card-section>

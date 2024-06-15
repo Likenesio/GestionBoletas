@@ -21,7 +21,7 @@
             border-right: 1px solid #ddd;
           "
         >
-          <q-list padding>
+          <q-list id="list">
             <q-item clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="person" />
@@ -197,3 +197,9 @@ export default {
   },
 };
 </script>
+
+<style>
+#list{
+  margin-top: 30px;
+}
+</style>
