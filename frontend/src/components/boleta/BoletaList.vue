@@ -103,7 +103,7 @@ export default {
       { name: 'fecha', label: 'Fecha', align: 'left', field: row => new Date(row.fecha).toLocaleDateString(), sortable: true },
       { name: 'total', label: 'Total', align: 'left', field: row => row.total, format: val => `${val}`, sortable: true },
       { name: 'estado', label: 'Estado Boleta', align: 'left', field: row => row.estado, format: val => `${val}`, sortable: true },
-      { name: 'detalles', label: 'Detalles', align: 'center', field: 'detalles', sortable: false }
+      { name: 'detalles', label: 'Detalles', align: 'left', field: 'detalles', sortable: false }
     ];
 
     const fetchBoletas = async () => {
