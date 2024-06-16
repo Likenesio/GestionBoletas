@@ -4,12 +4,10 @@
       :grid="$q.screen.xs"
       flat bordered
       title="Lista de Boletas"
-      :rows="paginatedAndFilteredBoletas"
+      :rows="boletas"
       :columns="columns"
       row-key="_id"
       :filter="filter"
-      :pagination="pagination"
-      @request="onRequest"
     >
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
@@ -22,6 +20,13 @@
         <q-td :props="props">
           <q-btn :color="getEstadoColor(props.row.estado)" style="width: 100px;" @click="openDialog(props.row)">
             {{ props.row.estado }}
+          </q-btn>
+        </q-td>
+      </template>
+      <template v-slot:body-cell-detalles="props">
+        <q-td :props="props">
+          <q-btn color="primary" @click="openDetailsDialog(props.row)">
+            Ver Detalles
           </q-btn>
         </q-td>
       </template>
@@ -44,12 +49,37 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="detailsDialogVisible">
+      <q-card style="min-width: 500px;">
+        <q-card-section>
+          <div class="text-h6">Detalles de la Boleta</div>
+        </q-card-section>
+        <q-card-section>
+          <div><strong>Número:</strong> {{ selectedBoletaDetalles.numero }}</div>
+          <div><strong>Proveedor:</strong> {{ selectedBoletaDetalles.proveedor[0]?.nombre }}</div>
+          <div><strong>Fecha:</strong> {{ new Date(selectedBoletaDetalles.fecha).toLocaleDateString() }}</div>
+          <div><strong>Total:</strong> {{ selectedBoletaDetalles.total }}</div>
+          <div><strong>Estado:</strong> {{ selectedBoletaDetalles.estado }}</div>
+          <div><strong>Productos:</strong></div>
+          <q-list bordered>
+            <q-item v-for="(producto, index) in selectedBoletaDetalles.productos" :key="index">
+              <q-item-section>{{ producto.nombre }}</q-item-section>
+              <q-item-section>{{ producto.cantidad }}</q-item-section>
+              <q-item-section>{{ producto.precio }}</q-item-section>
+            </q-item>
+          </q-list>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cerrar" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import axios from '../../axios';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 
 export default {
   name: 'BoletaList',
@@ -57,7 +87,9 @@ export default {
     const boletas = ref([]);
     const filter = ref('');
     const dialogVisible = ref(false);
+    const detailsDialogVisible = ref(false);
     const selectedBoleta = ref(null);
+    const selectedBoletaDetalles = ref({});
     const selectedEstado = ref('');
     const estadoOptions = [
       'Pendiente',
@@ -65,25 +97,19 @@ export default {
       'Anulada'
     ];
 
-    const pagination = ref({
-      page: 1,
-      rowsPerPage: 15,
-      rowsNumber: 0
-    });
-
     const columns = [
       { name: 'numero', required: true, label: 'N° de Boleta', align: 'left', field: row => row.numero, format: val => `${val}`, sortable: true },
       { name: 'proveedor', required: true, label: 'Proveedor', align: 'left', field: row => row.proveedor[0]?.nombre, format: val => `${val}`, sortable: true },
       { name: 'fecha', label: 'Fecha', align: 'left', field: row => new Date(row.fecha).toLocaleDateString(), sortable: true },
       { name: 'total', label: 'Total', align: 'left', field: row => row.total, format: val => `${val}`, sortable: true },
       { name: 'estado', label: 'Estado Boleta', align: 'left', field: row => row.estado, format: val => `${val}`, sortable: true },
+      { name: 'detalles', label: 'Detalles', align: 'center', field: 'detalles', sortable: false }
     ];
 
     const fetchBoletas = async () => {
       try {
         const response = await axios.get('/boleta');
         boletas.value = response.data;
-        pagination.value.rowsNumber = boletas.value.length;
       } catch (error) {
         console.error('Error al listar boletas:', error);
       }
@@ -93,6 +119,11 @@ export default {
       selectedBoleta.value = boleta;
       selectedEstado.value = boleta.estado;
       dialogVisible.value = true;
+    };
+
+    const openDetailsDialog = (boleta) => {
+      selectedBoletaDetalles.value = boleta;
+      detailsDialogVisible.value = true;
     };
 
     const updateBoletaEstado = async () => {
@@ -119,34 +150,11 @@ export default {
         case 'Anulada':
           return 'grey-13';
         case 'Pendiente':
-          return 'yellow-10';
+          return 'amber-9';
         default:
           return 'primary';
       }
     };
-
-    const onRequest = (props) => {
-      const { page, rowsPerPage } = props.pagination;
-      pagination.value.page = page;
-      pagination.value.rowsPerPage = rowsPerPage;
-    };
-
-    const filteredBoletas = computed(() => {
-      const lowerFilter = filter.value.toLowerCase();
-      return boletas.value.filter(boleta =>
-        boleta.numero.toString().includes(lowerFilter) ||
-        boleta.proveedor[0]?.nombre.toLowerCase().includes(lowerFilter) ||
-        new Date(boleta.fecha).toLocaleDateString().includes(lowerFilter) ||
-        boleta.total.toString().includes(lowerFilter) ||
-        boleta.estado.toLowerCase().includes(lowerFilter)
-      );
-    });
-
-    const paginatedAndFilteredBoletas = computed(() => {
-      const start = (pagination.value.page - 1) * pagination.value.rowsPerPage;
-      const end = start + pagination.value.rowsPerPage;
-      return filteredBoletas.value.slice(start, end);
-    });
 
     onMounted(fetchBoletas);
 
@@ -155,15 +163,15 @@ export default {
       columns,
       filter,
       dialogVisible,
+      detailsDialogVisible,
       selectedBoleta,
+      selectedBoletaDetalles,
       selectedEstado,
       estadoOptions,
       openDialog,
+      openDetailsDialog,
       updateBoletaEstado,
-      getEstadoColor,
-      pagination,
-      onRequest,
-      paginatedAndFilteredBoletas
+      getEstadoColor
     };
   }
 };
