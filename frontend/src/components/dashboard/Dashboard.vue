@@ -21,14 +21,14 @@
             border-right: 1px solid #ddd;
           "
         >
-          <q-list padding>
+          <q-list id="list">
             <q-item clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="person" />
               </q-item-section>
               <q-item-section>
                 <div class="q-pa-sm">
-                  <q-btn-dropdown style="background-color: #fafafa;" label="Usuario">
+                  <q-btn-dropdown color="light-green-9" label="Usuario">
                     <q-list>
                       <q-item clickable v-close-popup @click="onItemClick('/dashboard/register')">
                         <q-item-section>
@@ -59,7 +59,7 @@
               </q-item-section>
               <q-item-section>
                 <div class="q-pa-sm">
-                  <q-btn-dropdown style="background-color:  #fafafa;" label="Proveedor">
+                  <q-btn-dropdown color="light-green-9" label="Proveedor">
                     <q-list>
                       <q-item clickable v-close-popup @click="onItemClick('/dashboard/register-proveedor')">
                         <q-item-section>
@@ -90,7 +90,7 @@
               </q-item-section>
               <q-item-section>
                 <div class="q-pa-sm">
-                  <q-btn-dropdown style="background-color:  #fafafa;" label="Boleta">
+                  <q-btn-dropdown color="light-green-9" label="Boleta">
                     <q-list>
                       <q-item clickable v-close-popup @click="onItemClick('/dashboard/register-boleta')">
                         <q-item-section>
@@ -119,7 +119,7 @@
               <q-item-section avatar>
                 <q-icon name="power_settings_new" />
               </q-item-section>
-              <q-btn @click="logout" color="white" text-color="black" label="Cerrar Sesión"></q-btn>
+              <q-btn @click="logout" color="red-10"  text-color="white" label="Cerrar Sesión"></q-btn>
               <q-item-section> </q-item-section>
             </q-item>
           </q-list>
@@ -131,7 +131,7 @@
         >
           <div class="absolute-bottom bg-transparent">
             <q-avatar size="56px" class="q-mb-sm">
-              <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+              <img src="../../assets/images/batman_hero.webp" />
             </q-avatar>
             <div class="text-weight-bold">{{nombre}} {{ apellido }}</div>
             <div>@{{ rol }}</div>
@@ -197,3 +197,9 @@ export default {
   },
 };
 </script>
+
+<style>
+#list{
+  margin-top: 30px;
+}
+</style>

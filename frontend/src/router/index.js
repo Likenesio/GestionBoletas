@@ -9,9 +9,9 @@ import DeleteUser from '../components/user/DeleteUser.vue';
 import RegisterBoleta from '../components/boleta/RegisterBoleta.vue';
 import BoletaList from '../components/boleta/BoletaList.vue';
 /* import UpdateBoleta from '../components/boleta/UpdateBoleta.vue'; */
-/* import RegisterProveedor from '../components/proveedor/RegisterProveedor.vue';
+import RegisterProveedor from '../components/proveedor/RegisterProveedor.vue';
 import ProveedorList from '../components/proveedor/ProveedorList.vue';
-import UpdateProveedor from '../components/proveedor/UpdateProveedor.vue'; */
+/* import UpdateProveedor from '../components/proveedor/UpdateProveedor.vue'; */
 
 const router = createRouter({
   history: createWebHistory(),
@@ -28,9 +28,9 @@ const router = createRouter({
         { path: 'register-boleta', component: RegisterBoleta },
         { path: 'boleta-list', component: BoletaList },
         /* { path: 'update-boleta', component: UpdateBoleta }, */
-        /* { path: 'register-proveedor', component: RegisterProveedor },
+        { path: 'register-proveedor', component: RegisterProveedor },
         { path: 'proveedor-list', component: ProveedorList },
-        { path: 'update-proveedor', component: UpdateProveedor }, */
+        /* { path: 'update-proveedor', component: UpdateProveedor }, */
       ]
     },
     { path: '/change-password/:_id', component: ChangePassword, meta: { requiresAuth: true } },

@@ -3,9 +3,20 @@
     <q-form @submit.prevent="confirmSubmit">
       <q-card>
         <q-card-section>
+<<<<<<< HEAD
           <q-input filled v-model="numero" label="Número" type="number" :rules="[
             (val) => val > 0 || 'El número debe ser un entero positivo',
           ]" required />
+=======
+          <q-input
+            filled
+            v-model="numero"
+            label="Número"
+            type="number"
+            :rules="[val => val > 0 || 'El número debe ser un entero positivo']"
+            required
+          />
+>>>>>>> a45b09ae970a8c792dde7b87bbee5ab82cc81e05
         </q-card-section>
 
         <q-card-section>
@@ -18,6 +29,7 @@
         </q-card-section>
 
         <q-card-section>
+<<<<<<< HEAD
           <q-select filled v-model="estado" label="Estado" :options="estados" required />
         </q-card-section>
 
@@ -28,24 +40,89 @@
               <q-td :props="props">
                 <q-input v-model="props.row.nombre" label="Nombre" dense outlined autofocus
                   :rules="[(val) => !!val || 'El nombre es requerido']" />
+=======
+          <q-select
+            filled
+            v-model="estado"
+            label="Estado"
+            :options="estados"
+            required
+          />
+        </q-card-section>
+
+        <q-card-section>
+          <q-table
+            title="Productos"
+            :rows="productos"
+            :columns="columns"
+            row-key="nombre"
+            flat
+            :pagination.sync="pagination"
+          >
+            <template v-slot:body-cell-nombre="props">
+              <q-td :props="props">
+                <q-input
+                  v-model="props.row.nombre"
+                  label="Nombre"
+                  dense
+                  outlined
+                  autofocus
+                  :rules="[val => !!val || 'El nombre es requerido']"
+                />
+>>>>>>> a45b09ae970a8c792dde7b87bbee5ab82cc81e05
               </q-td>
             </template>
             <template v-slot:body-cell-precio_unitario="props">
               <q-td :props="props">
+<<<<<<< HEAD
                 <q-input v-model="props.row.precio_unitario" label="Precio Unitario" dense outlined type="number"
                   @input="calculateTotal" :rules="[(val) => val > 0 || 'Debe ser un entero positivo']" />
+=======
+                <q-input
+                  v-model="props.row.precio_unitario"
+                  label="Precio Unitario"
+                  dense
+                  outlined
+                  type="number"
+                  @input="calculateTotal"
+                  :rules="[val => val > 0 || 'Debe ser un entero positivo']"
+                />
+>>>>>>> a45b09ae970a8c792dde7b87bbee5ab82cc81e05
               </q-td>
             </template>
             <template v-slot:body-cell-cantidad="props">
               <q-td :props="props">
+<<<<<<< HEAD
                 <q-input v-model="props.row.cantidad" label="Cantidad" dense outlined type="number"
                   @input="calculateTotal" :rules="[(val) => val > 0 || 'Debe ser un entero positivo']" />
+=======
+                <q-input
+                  v-model="props.row.cantidad"
+                  label="Cantidad"
+                  dense
+                  outlined
+                  type="number"
+                  @input="calculateTotal"
+                  :rules="[val => val > 0 || 'Debe ser un entero positivo']"
+                />
+>>>>>>> a45b09ae970a8c792dde7b87bbee5ab82cc81e05
               </q-td>
             </template>
             <template v-slot:body-cell-unidad_medida="props">
               <q-td :props="props">
+<<<<<<< HEAD
                 <q-select v-model="props.row.unidad_medida" :options="['KG', 'CAJA', 'UND']" label="Unidad Medida" dense
                   outlined :rules="[(val) => !!val || 'Unidad de medida es requerida']" />
+=======
+                <q-select
+                  v-model="props.row.unidad_medida"
+                  :options="['KG', 'CAJA', 'UND']"
+                  label="Unidad Medida"
+                  dense
+                  outlined
+                  :rules="[val => !!val || 'Unidad de medida es requerida']"
+                />
+>>>>>>> a45b09ae970a8c792dde7b87bbee5ab82cc81e05
               </q-td>
             </template>
             <template v-slot:body-cell-acciones="props">
@@ -90,11 +167,19 @@ export default {
   data() {
     return {
       numero: 1,
+<<<<<<< HEAD
       fecha: "",
       proveedor: "",
       productos: [],
       proveedores: [],
       estado: "Pendiente",
+=======
+      fecha: '',
+      proveedor: '',
+      productos: [],
+      proveedores: [],
+      estado: 'Pendiente',
+>>>>>>> a45b09ae970a8c792dde7b87bbee5ab82cc81e05
       total: 0,
       columns: [
         { name: "nombre", required: true, label: "Nombre", align: "left" },
@@ -118,7 +203,11 @@ export default {
         rowsPerPage: 5,
       },
       confirmDialog: false,
+<<<<<<< HEAD
       estados: ["Pendiente", "Pagado"],
+=======
+      estados: ['Pendiente', 'Pagado']
+>>>>>>> a45b09ae970a8c792dde7b87bbee5ab82cc81e05
     };
   },
   created() {
@@ -139,12 +228,16 @@ export default {
       }
     },
     addProducto() {
+<<<<<<< HEAD
       this.productos.push({
         nombre: "",
         precio_unitario: 1,
         cantidad: 1,
         unidad_medida: "KG",
       });
+=======
+      this.productos.push({ nombre: '', precio_unitario: 1, cantidad: 1, unidad_medida: 'KG' });
+>>>>>>> a45b09ae970a8c792dde7b87bbee5ab82cc81e05
     },
     removeProducto(producto) {
       this.productos = this.productos.filter((p) => p !== producto);
@@ -159,6 +252,19 @@ export default {
     },
     async confirmSubmit() {
       if (!this.proveedor) {
+<<<<<<< HEAD
+=======
+        this.$q.notify({
+          color: 'negative',
+          position: 'top',
+          message: 'Debe seleccionar un proveedor.',
+          icon: 'report_problem'
+        });
+        return;
+      }
+
+      if (this.productos.length === 0 || this.productos.some(p => !p.nombre || !p.precio_unitario || !p.cantidad || !p.unidad_medida)) {
+>>>>>>> a45b09ae970a8c792dde7b87bbee5ab82cc81e05
         this.$q.notify({
           color: "negative",
           position: "top",
@@ -213,7 +319,11 @@ export default {
         proveedor: this.proveedor,
         productos: this.productos,
         estado: this.estado,
+<<<<<<< HEAD
         total: this.total,
+=======
+        total: this.total
+>>>>>>> a45b09ae970a8c792dde7b87bbee5ab82cc81e05
       };
       try {
         const response = await axios.post("/boleta", boletaData);
@@ -225,9 +335,15 @@ export default {
         });
         // Reset form
         this.numero = 1;
+<<<<<<< HEAD
         this.fecha = "";
         this.proveedor = "";
         this.estado = "Pendiente";
+=======
+        this.fecha = '';
+        this.proveedor = '';
+        this.estado = 'Pendiente';
+>>>>>>> a45b09ae970a8c792dde7b87bbee5ab82cc81e05
         this.productos = [];
         this.total = 0;
       } catch (error) {

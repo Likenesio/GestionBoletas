@@ -32,6 +32,10 @@ const boletaSchema = new schema({
     type: Date,
     required: true,
   },
+  estado: {
+    type: String,
+    required: true,
+  },
   total: {
     type: Number,
     required: true,
