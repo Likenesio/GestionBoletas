@@ -139,7 +139,7 @@
 
         <q-card-actions align="right">
           <q-btn
-            color="primary"
+            color="green-10"
             type="submit"
             label="Crear Boleta"
           />
@@ -154,7 +154,7 @@
           </q-card-section>
           <q-card-actions align="right">
             <q-btn flat label="Cancelar" v-close-popup />
-            <q-btn color="primary" flat label="Confirmar" @click="submitBoleta" v-close-popup />
+            <q-btn color="green-10" flat label="Confirmar" @click="submitBoleta" v-close-popup />
           </q-card-actions>
         </q-card>
       </q-dialog>
