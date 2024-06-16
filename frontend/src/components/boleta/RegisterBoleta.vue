@@ -31,7 +31,6 @@
             :options="proveedores"
             option-label="nombre"
             option-value="_id"
-            :rules="[val => !!val || 'El proveedor es requerido']"
             required
           />
         </q-card-section>
@@ -187,7 +186,7 @@ export default {
         rowsPerPage: 5
       },
       confirmDialog: false,
-      estados: ['Pendiente', 'Pagado']
+      estados: ['Pendiente', 'Pagada']
     };
   },
   created() {

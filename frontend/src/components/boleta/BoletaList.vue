@@ -4,10 +4,12 @@
       :grid="$q.screen.xs"
       flat bordered
       title="Lista de Boletas"
-      :rows="boletas"
+      :rows="paginatedBoletas"
       :columns="columns"
       row-key="_id"
       :filter="filter"
+      :pagination="pagination"
+      @request="onRequest"
     >
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Buscar">
@@ -18,7 +20,7 @@
       </template>
       <template v-slot:body-cell-estado="props">
         <q-td :props="props">
-          <q-btn style="width: 100px;" color="green-10" @click="openDialog(props.row)">
+          <q-btn :color="getEstadoColor(props.row.estado)" style="width: 100px;" @click="openDialog(props.row)">
             {{ props.row.estado }}
           </q-btn>
         </q-td>
@@ -47,7 +49,7 @@
 
 <script>
 import axios from '../../axios';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 export default {
   name: 'BoletaList',
@@ -63,6 +65,12 @@ export default {
       'Anulada'
     ];
 
+    const pagination = ref({
+      page: 1,
+      rowsPerPage: 15, 
+      rowsNumber: 0
+    });
+
     const columns = [
       { name: 'numero', required: true, label: 'N° de Boleta', align: 'left', field: row => row.numero, format: val => `${val}`, sortable: true },
       { name: 'proveedor', required: true, label: 'Proveedor', align: 'left', field: row => row.proveedor[0]?.nombre, format: val => `${val}`, sortable: true },
@@ -75,6 +83,7 @@ export default {
       try {
         const response = await axios.get('/boleta');
         boletas.value = response.data;
+        pagination.value.rowsNumber = boletas.value.length;
       } catch (error) {
         console.error('Error al listar boletas:', error);
       }
@@ -103,6 +112,31 @@ export default {
       }
     };
 
+    const getEstadoColor = (estado) => {
+      switch (estado) {
+        case 'Pagada':
+          return 'green-10';
+        case 'Anulada':
+          return 'grey-13';
+        case 'Pendiente':
+          return 'yellow-10';
+        default:
+          return 'primary';
+      }
+    };
+
+    const onRequest = (props) => {
+      const { page, rowsPerPage } = props.pagination;
+      pagination.value.page = page;
+      pagination.value.rowsPerPage = rowsPerPage;
+    };
+
+    const paginatedBoletas = computed(() => {
+      const start = (pagination.value.page - 1) * pagination.value.rowsPerPage;
+      const end = start + pagination.value.rowsPerPage;
+      return boletas.value.slice(start, end);
+    });
+
     onMounted(fetchBoletas);
 
     return {
@@ -114,7 +148,11 @@ export default {
       selectedEstado,
       estadoOptions,
       openDialog,
-      updateBoletaEstado
+      updateBoletaEstado,
+      getEstadoColor,
+      pagination,
+      onRequest,
+      paginatedBoletas
     };
   }
 };
