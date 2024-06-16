@@ -4,7 +4,7 @@
       :grid="$q.screen.xs"
       flat bordered
       title="Lista de Boletas"
-      :rows="paginatedBoletas"
+      :rows="paginatedAndFilteredBoletas"
       :columns="columns"
       row-key="_id"
       :filter="filter"
@@ -67,7 +67,7 @@ export default {
 
     const pagination = ref({
       page: 1,
-      rowsPerPage: 15, 
+      rowsPerPage: 15,
       rowsNumber: 0
     });
 
@@ -131,10 +131,21 @@ export default {
       pagination.value.rowsPerPage = rowsPerPage;
     };
 
-    const paginatedBoletas = computed(() => {
+    const filteredBoletas = computed(() => {
+      const lowerFilter = filter.value.toLowerCase();
+      return boletas.value.filter(boleta =>
+        boleta.numero.toString().includes(lowerFilter) ||
+        boleta.proveedor[0]?.nombre.toLowerCase().includes(lowerFilter) ||
+        new Date(boleta.fecha).toLocaleDateString().includes(lowerFilter) ||
+        boleta.total.toString().includes(lowerFilter) ||
+        boleta.estado.toLowerCase().includes(lowerFilter)
+      );
+    });
+
+    const paginatedAndFilteredBoletas = computed(() => {
       const start = (pagination.value.page - 1) * pagination.value.rowsPerPage;
       const end = start + pagination.value.rowsPerPage;
-      return boletas.value.slice(start, end);
+      return filteredBoletas.value.slice(start, end);
     });
 
     onMounted(fetchBoletas);
@@ -152,7 +163,7 @@ export default {
       getEstadoColor,
       pagination,
       onRequest,
-      paginatedBoletas
+      paginatedAndFilteredBoletas
     };
   }
 };
