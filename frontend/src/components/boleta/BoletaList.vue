@@ -74,12 +74,14 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-btn label="Descargar Excel" @click="downloadExcel" color="primary" class="q-mt-md" />
   </div>
 </template>
 
 <script>
 import axios from '../../axios';
 import { ref, onMounted } from 'vue';
+import ExcelJS from 'exceljs';
 
 export default {
   name: 'BoletaList',
@@ -156,6 +158,45 @@ export default {
       }
     };
 
+    const downloadExcel = async () => {
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet('Boletas');
+      
+      // Añadir encabezados
+      worksheet.columns = columns.map(col => ({ header: col.label, key: col.name }));
+
+      // Añadir encabezados
+      worksheet.columns = columns.map(col => ({
+        header: col.label,
+        key: col.name,
+        width: 30 
+      }));
+      
+      // Añadir filas
+      boletas.value.forEach(boleta => {
+        worksheet.addRow({
+          numero: boleta.numero,
+          proveedor: boleta.proveedor[0]?.nombre,
+          fecha: new Date(boleta.fecha).toLocaleDateString(),
+          total: boleta.total,
+          estado: boleta.estado
+        });
+      });
+      
+      // Generar archivo Excel
+      const buffer = await workbook.xlsx.writeBuffer();
+      
+      // Crear un enlace para descargar el archivo
+      const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'Boletas-Nutriver.xlsx';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
     onMounted(fetchBoletas);
 
     return {
@@ -171,11 +212,13 @@ export default {
       openDialog,
       openDetailsDialog,
       updateBoletaEstado,
-      getEstadoColor
+      getEstadoColor,
+      downloadExcel
     };
   }
 };
 </script>
+
 
 <style scoped>
 .q-table {
