@@ -134,7 +134,21 @@
 
       <q-page-container>
         <q-page padding>
-          
+            <template v-if="isExactDashboard">
+              <article>
+              <div class="title">
+                <h1>NUTRIVER</h1>
+              </div>
+              <div class="q-pa-md">
+                <q-carousel class="carousel-container" swipeable animated v-model="slide" thumbnails infinite>
+                  <q-carousel-slide class="img-carousel" :name="1" img-src="https://cdn.quasar.dev/img/mountains.jpg" />
+                  <q-carousel-slide class="img-carousel" :name="2" img-src="https://cdn.quasar.dev/img/parallax1.jpg" />
+                  <q-carousel-slide class="img-carousel" :name="3" img-src="https://cdn.quasar.dev/img/parallax2.jpg" />
+                  <q-carousel-slide class="img-carousel" :name="4" img-src="https://cdn.quasar.dev/img/quasar.jpg" />
+                </q-carousel>
+              </div>
+            </article>
+            </template>
           <router-view />
         </q-page>
       </q-page-container>
@@ -143,13 +157,23 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { useRouter } from 'vue-router';
+import { ref, computed } from "vue";
+import { useRouter, useRoute } from 'vue-router';
+import { QCarousel, QCarouselSlide, QCarouselControl, QBtn } from 'quasar';
 
 export default {
+  components: {
+    QCarousel,
+    QCarouselSlide,
+    QCarouselControl,
+    QBtn
+  },
   setup() {
     const drawer = ref(false);
     const router = useRouter();
+    const route = useRoute();
+
+    const isExactDashboard = computed(() => route.path === '/dashboard');
 
     const navigateTo = (path) => {
       router.push(path);
@@ -158,14 +182,17 @@ export default {
     const onItemClick = (path) => {
       navigateTo(path);
     };
+
     const navigateToDashboard = () => {
       navigateTo("/dashboard");
     };
 
     return {
       drawer,
+      isExactDashboard,
       onItemClick,
       navigateToDashboard,
+      slide: ref(1)
     };
   },
   created() {
@@ -181,27 +208,50 @@ export default {
         this.nombre = decoded.nombre;
         this.apellido = decoded.apellido;
         this.isAuthenticated = true;
-        this.$router.push("/dashboard"); // Redirigir al dashboard si está autenticado
+        this.$router.push("/dashboard");
       } else {
-        this.$router.push("/login"); // Redirigir a login si no está autenticado
+        this.$router.push("/login");
       }
     },
     logout() {
       localStorage.removeItem("token");
       this.isAuthenticated = false;
       this.userId = null;
-      this.$router.push("/login"); // Redirigir a login después de cerrar sesión
+      this.$router.push("/login");
     },
   },
 };
 </script>
 
+
+
 <style>
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 #list {
   margin-top: 30px;
 }
 
 .dropdown {
   width: 110px;
+}
+.img-carousel{
+  object-fit: cover;
+}
+.carousel-container{
+  width: 100%;
+  height: 720px;
+  padding: 0;
+  margin: 0;
+}
+.title{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
 }
 </style>
