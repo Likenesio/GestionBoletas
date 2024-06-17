@@ -136,6 +136,7 @@ h1 {
   font-size: 3em;
   line-height: 1.1;
   font-weight: 700;
+  padding: 10px;
 }
 .q-pa-md {
   max-width: 600px;
