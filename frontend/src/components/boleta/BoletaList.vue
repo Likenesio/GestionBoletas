@@ -65,7 +65,7 @@
             <q-item v-for="(producto, index) in selectedBoletaDetalles.productos" :key="index">
               <q-item-section>{{ producto.nombre }}</q-item-section>
               <q-item-section>{{ producto.cantidad }}</q-item-section>
-              <q-item-section>{{ producto.precio }}</q-item-section>
+              <q-item-section>{{ producto.precio_unitario }}</q-item-section>
             </q-item>
           </q-list>
         </q-card-section>
