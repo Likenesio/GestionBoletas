@@ -12,34 +12,37 @@
       <q-drawer v-model="drawer" show-if-above :width="200" :breakpoint="400">
         <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd;">
           <q-list id="list">
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-icon name="person" />
-              </q-item-section>
-              <q-item-section>
-                <div class="q-pa-sm">
-                  <q-btn-dropdown class="dropdown" color="light-green-9" label="Usuario">
-                    <q-list>
-                      <q-item clickable v-close-popup @click="onItemClick('/dashboard/register')">
-                        <q-item-section>
-                          <q-item-label>Agregar Usuario</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                      <q-item clickable v-close-popup @click="onItemClick('/dashboard/userslist')">
-                        <q-item-section>
-                          <q-item-label>Listar Usuario</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                      <q-item clickable v-close-popup @click="onItemClick('/dashboard/update')">
-                        <q-item-section>
-                          <q-item-label>Actualizar Usuario</q-item-label>
-                        </q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-btn-dropdown>
-                </div>
-              </q-item-section>
-            </q-item>
+            <template v-if="rol === 'Administrador'">
+              <q-item clickable v-ripple>
+                <q-item-section avatar>
+                  <q-icon name="person" />
+                </q-item-section>
+                <q-item-section>
+                  <div class="q-pa-sm">
+                    <q-btn-dropdown class="dropdown" color="light-green-9" label="Usuario">
+                      <q-list>
+                        <q-item clickable v-close-popup @click="onItemClick('/dashboard/register')">
+                          <q-item-section>
+                            <q-item-label>Agregar Usuario</q-item-label>
+                          </q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="onItemClick('/dashboard/userslist')">
+                          <q-item-section>
+                            <q-item-label>Listar Usuario</q-item-label>
+                          </q-item-section>
+                        </q-item>
+                        <q-item clickable v-close-popup @click="onItemClick('/dashboard/update')">
+                          <q-item-section>
+                            <q-item-label>Actualizar Usuario</q-item-label>
+                          </q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-btn-dropdown>
+                  </div>
+                </q-item-section>
+              </q-item>
+            </template>
+
             <q-item clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="business" />
@@ -68,6 +71,7 @@
                 </div>
               </q-item-section>
             </q-item>
+
             <q-item clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="receipt" />
@@ -96,6 +100,7 @@
                 </div>
               </q-item-section>
             </q-item>
+
             <q-item clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="power_settings_new" />
@@ -127,8 +132,7 @@
                   <q-carousel-slide class="img-carousel" :name="1" img-src="../../assets/images/huerta en casa.png" />
                   <q-carousel-slide class="img-carousel" :name="2" img-src="../../assets/images/auto-nutriver.jpeg" />
                   <q-carousel-slide class="img-carousel" :name="3" img-src="../../assets/images/delivery.jpeg" />
-                  <q-carousel-slide class="img-carousel" :name="4"
-                    img-src="../../assets/images/entrega-de-tomates.jpeg" />
+                  <q-carousel-slide class="img-carousel" :name="4" img-src="../../assets/images/entrega-de-tomates.jpeg" />
                 </q-carousel>
               </div>
             </article>
@@ -175,6 +179,7 @@ export default {
     const router = useRouter();
     const route = useRoute();
     const dialog = ref(false);
+    const rol = ref('');
 
     const isExactDashboard = computed(() => route.path === '/dashboard');
 
@@ -196,7 +201,8 @@ export default {
       onItemClick,
       navigateToDashboard,
       slide: ref(1),
-      dialog
+      dialog,
+      rol
     };
   },
   created() {
@@ -225,45 +231,10 @@ export default {
       this.isAuthenticated = false;
       this.userId = null;
       this.$router.push("/login");
-    },
-  },
+    }
+  }
 };
 </script>
-
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-.q-pa-md {
-  padding: 0px !important;
-}
-
-#list {
-  margin-top: 30px;
-}
-
-.dropdown {
-  width: 110px;
-}
-
-.img-carousel {
-  object-fit: 1;
-  object-position: center;
-}
-
-.carousel-container {
-  max-width: 100%;
-  height: 90vh;
-  padding: 0;
-  margin: 0;
-}
-</style>
-
-
-
 
 <style>
 * {
