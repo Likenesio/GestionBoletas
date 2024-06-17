@@ -133,7 +133,7 @@ export default {
   box-sizing: border-box;
 }
 h1 {
-  font-size: 3em;
+  font-size: 3.5em;
   line-height: 1.1;
   font-weight: 700;
   padding: 10px;
