@@ -10,11 +10,7 @@
       </q-header>
 
       <q-drawer v-model="drawer" show-if-above :width="200" :breakpoint="400">
-        <q-scroll-area style="
-            height: calc(100% - 150px);
-            margin-top: 150px;
-            border-right: 1px solid #ddd;
-          ">
+        <q-scroll-area style="height: calc(100% - 150px); margin-top: 150px; border-right: 1px solid #ddd;">
           <q-list id="list">
             <q-item clickable v-ripple>
               <q-item-section avatar>
@@ -29,13 +25,11 @@
                           <q-item-label>Agregar Usuario</q-item-label>
                         </q-item-section>
                       </q-item>
-
                       <q-item clickable v-close-popup @click="onItemClick('/dashboard/userslist')">
                         <q-item-section>
                           <q-item-label>Listar Usuario</q-item-label>
                         </q-item-section>
                       </q-item>
-
                       <q-item clickable v-close-popup @click="onItemClick('/dashboard/update')">
                         <q-item-section>
                           <q-item-label>Actualizar Usuario</q-item-label>
@@ -46,7 +40,6 @@
                 </div>
               </q-item-section>
             </q-item>
-
             <q-item clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="business" />
@@ -60,13 +53,11 @@
                           <q-item-label>Agregar Proveedor</q-item-label>
                         </q-item-section>
                       </q-item>
-
                       <q-item clickable v-close-popup @click="onItemClick('/dashboard/proveedor-list')">
                         <q-item-section>
                           <q-item-label>Listar Proveedor</q-item-label>
                         </q-item-section>
                       </q-item>
-
                       <q-item clickable v-close-popup @click="onItemClick('/dashboard/update-proveedor')">
                         <q-item-section>
                           <q-item-label>Actualizar Proveedor</q-item-label>
@@ -77,7 +68,6 @@
                 </div>
               </q-item-section>
             </q-item>
-
             <q-item clickable v-ripple>
               <q-item-section avatar>
                 <q-icon name="receipt" />
@@ -91,13 +81,11 @@
                           <q-item-label>Agregar Boleta</q-item-label>
                         </q-item-section>
                       </q-item>
-
                       <q-item clickable v-close-popup @click="onItemClick('/dashboard/boleta-list')">
                         <q-item-section>
                           <q-item-label>Listar Boleta</q-item-label>
                         </q-item-section>
                       </q-item>
-
                       <q-item clickable v-close-popup @click="onItemClick('/dashboard/update-boleta')">
                         <q-item-section>
                           <q-item-label>Actualizar Boleta</q-item-label>
@@ -108,14 +96,12 @@
                 </div>
               </q-item-section>
             </q-item>
-
             <q-item clickable v-ripple>
-
               <q-item-section avatar>
                 <q-icon name="power_settings_new" />
               </q-item-section>
               <div class="q-pa-sm">
-                <q-btn class="dropdown" @click="logout" color="red-10" text-color="white" label="Salir"></q-btn>
+                <q-btn class="dropdown" @click="confirmLogout" color="red-10" text-color="white" label="Salir"></q-btn>
               </div>
             </q-item>
           </q-list>
@@ -151,25 +137,44 @@
         </q-page>
       </q-page-container>
     </q-layout>
+
+    <q-dialog v-model="dialog">
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="warning" color="red" text-color="white" />
+          <span class="q-ml-sm">¿Estás seguro de que deseas cerrar sesión?</span>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+          <q-btn flat label="Salir" color="primary" @click="logout" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import { ref, computed } from "vue";
 import { useRouter, useRoute } from 'vue-router';
-import { QCarousel, QCarouselSlide, QCarouselControl, QBtn } from 'quasar';
+import { QCarousel, QCarouselSlide, QCarouselControl, QBtn, QDialog, QCard, QCardSection, QCardActions, QAvatar } from 'quasar';
 
 export default {
   components: {
     QCarousel,
     QCarouselSlide,
     QCarouselControl,
-    QBtn
+    QBtn,
+    QDialog,
+    QCard,
+    QCardSection,
+    QCardActions,
+    QAvatar
   },
   setup() {
     const drawer = ref(false);
     const router = useRouter();
     const route = useRoute();
+    const dialog = ref(false);
 
     const isExactDashboard = computed(() => route.path === '/dashboard');
 
@@ -190,7 +195,8 @@ export default {
       isExactDashboard,
       onItemClick,
       navigateToDashboard,
-      slide: ref(1)
+      slide: ref(1),
+      dialog
     };
   },
   created() {
@@ -211,6 +217,9 @@ export default {
         this.$router.push("/login");
       }
     },
+    confirmLogout() {
+      this.dialog = true;
+    },
     logout() {
       localStorage.removeItem("token");
       this.isAuthenticated = false;
@@ -220,6 +229,39 @@ export default {
   },
 };
 </script>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.q-pa-md {
+  padding: 0px !important;
+}
+
+#list {
+  margin-top: 30px;
+}
+
+.dropdown {
+  width: 110px;
+}
+
+.img-carousel {
+  object-fit: 1;
+  object-position: center;
+}
+
+.carousel-container {
+  max-width: 100%;
+  height: 90vh;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
 
 
 
