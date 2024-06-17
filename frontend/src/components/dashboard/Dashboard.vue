@@ -5,6 +5,7 @@
         <q-toolbar>
           <q-toolbar-title>Nutriver</q-toolbar-title>
           <q-btn flat @click="drawer = !drawer" round dense icon="menu" />
+          <q-btn flat dense icon="home" @click="navigateToDashboard" />
         </q-toolbar>
       </q-header>
 
@@ -133,6 +134,7 @@
 
       <q-page-container>
         <q-page padding>
+          
           <router-view />
         </q-page>
       </q-page-container>
@@ -156,10 +158,14 @@ export default {
     const onItemClick = (path) => {
       navigateTo(path);
     };
+    const navigateToDashboard = () => {
+      navigateTo("/dashboard");
+    };
 
     return {
       drawer,
-      onItemClick
+      onItemClick,
+      navigateToDashboard,
     };
   },
   created() {
