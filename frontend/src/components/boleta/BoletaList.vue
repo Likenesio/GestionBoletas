@@ -25,7 +25,7 @@
       </template>
       <template v-slot:body-cell-detalles="props">
         <q-td :props="props">
-          <q-btn color="primary" @click="openDetailsDialog(props.row)">
+          <q-btn style="width: 100px;" color="indigo-10"  @click="openDetailsDialog(props.row)">
             Ver Detalles
           </q-btn>
         </q-td>
@@ -70,11 +70,11 @@
           </q-list>
         </q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="Cerrar" color="primary" v-close-popup />
+          <q-btn flat label="Cerrar" color="red-10" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-btn label="Descargar Excel" @click="downloadExcel" color="primary" class="q-mt-md" />
+    <q-btn label="Descargar Excel" @click="downloadExcel" color="light-green-10" class="q-mt-md" />
   </div>
 </template>
 
@@ -148,7 +148,7 @@ export default {
     const getEstadoColor = (estado) => {
       switch (estado) {
         case 'Pagada':
-          return 'green-10';
+          return 'light-blue-6';
         case 'Anulada':
           return 'grey-13';
         case 'Pendiente':
@@ -171,7 +171,6 @@ export default {
         key: col.name,
         width: 30 
       }));
-      
       // Añadir filas
       boletas.value.forEach(boleta => {
         worksheet.addRow({
@@ -179,10 +178,24 @@ export default {
           proveedor: boleta.proveedor[0]?.nombre,
           fecha: new Date(boleta.fecha).toLocaleDateString(),
           total: boleta.total,
-          estado: boleta.estado
+          estado: boleta.estado,
         });
       });
+
+      const totalSum = boletas.value.reduce((sum, boleta) => sum + boleta.total, 0);
+
+      worksheet.addRow({
+        numero: '',
+        proveedor: '',
+        fecha: '',
+        total: totalSum,
+        estado: 'Suma Total'
+      });
       
+      // Aplicar estilo a la fila de suma total
+      const lastRow = worksheet.lastRow;
+      lastRow.font = { bold: true };
+      lastRow.getCell('total').border = { top: { style: 'thin' } };
       // Generar archivo Excel
       const buffer = await workbook.xlsx.writeBuffer();
       
