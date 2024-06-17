@@ -56,11 +56,11 @@
         </q-card-section>
         <q-card-section>
           <div><strong>Número:</strong> {{ selectedBoletaDetalles.numero }}</div>
-          <div><strong>Proveedor:</strong> {{ selectedBoletaDetalles.proveedor[0]?.nombre }}</div>
-          <div><strong>Fecha:</strong> {{ new Date(selectedBoletaDetalles.fecha).toLocaleDateString() }}</div>
-          <div><strong>Total:</strong> {{ selectedBoletaDetalles.total }}</div>
-          <div><strong>Estado:</strong> {{ selectedBoletaDetalles.estado }}</div>
-          <div><strong>Productos:</strong></div>
+          <div class="detalle"><strong>Proveedor:</strong> {{ selectedBoletaDetalles.proveedor[0]?.nombre }}</div>
+          <div class="detalle"><strong>Fecha:</strong> {{ new Date(selectedBoletaDetalles.fecha).toLocaleDateString() }}</div>
+          <div class="detalle"><strong>Total:</strong> {{ selectedBoletaDetalles.total }}</div>
+          <div class="detalle"><strong>Estado:</strong> {{ selectedBoletaDetalles.estado }}</div>
+          <div class="detalle"><strong>Productos:</strong></div>
           <q-list bordered>
             <q-item v-for="(producto, index) in selectedBoletaDetalles.productos" :key="index">
               <q-item-section>{{ producto.nombre }}</q-item-section>
@@ -105,7 +105,7 @@ export default {
       { name: 'fecha', label: 'Fecha', align: 'left', field: row => new Date(row.fecha).toLocaleDateString(), sortable: true },
       { name: 'total', label: 'Total', align: 'left', field: row => row.total, format: val => `${val}`, sortable: true },
       { name: 'estado', label: 'Estado Boleta', align: 'left', field: row => row.estado, format: val => `${val}`, sortable: true },
-      { name: 'detalles', label: 'Detalles', align: 'left', field: 'detalles', sortable: false }
+      { name: 'detalles', label: 'Detalles', align: 'left', field: 'detalles', sortable: true }
     ];
 
     const fetchBoletas = async () => {
@@ -234,7 +234,18 @@ export default {
 
 
 <style scoped>
+*{
+  box-sizing: border-box;
+}
 .q-table {
   width: 100%;
+}
+.q-pa-md{
+  width: 100%;
+  height: 100vh;
+  min-width: 320px;
+}
+.detalle{
+  margin: 5px 0;
 }
 </style>
