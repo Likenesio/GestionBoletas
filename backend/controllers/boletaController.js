@@ -96,5 +96,18 @@ const verificarNumeroBoleta = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+const obtenerBoletaPorNumero = async (req, res) => {
+  const { numero } = req.params;
 
-module.exports = { createBoleta, getAllBoletas, getBoletaById, actualizarBoleta, deleteBoleta, verificarNumeroBoleta };
+  try {
+    const boleta = await Boleta.findOne({ numero }).populate('proveedor');
+    if (!boleta) {
+      return res.status(404).json({ message: 'Boleta no encontrada' });
+    }
+    res.status(200).json({ boleta });
+  } catch (error) {
+    res.status(500).json({ message: 'Error al buscar la boleta', error: error.message });
+  }
+};
+
+module.exports = { createBoleta, getAllBoletas, getBoletaById, actualizarBoleta, deleteBoleta, verificarNumeroBoleta, obtenerBoletaPorNumero };
