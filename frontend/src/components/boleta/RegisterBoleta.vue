@@ -58,7 +58,7 @@
               <q-td :props="props">
                 <q-input
                   v-model="props.row.nombre"
-                  label="Nombre"
+                  label="Nombre Producto"
                   dense
                   outlined
                   autofocus
@@ -175,9 +175,9 @@ export default {
       estado: 'Pendiente',
       total: 0,
       columns: [
-        { name: 'nombre', required: true, label: 'Nombre', align: 'left' },
+        { name: 'nombre', required: true, label: 'Nombre Producto', align: 'left' },
         { name: 'precio_unitario', required: true, label: 'Precio Unitario', align: 'left' },
-        { name: 'cantidad', required: true, label: 'Cantidad', align: 'left' },
+        { name: 'cantidad', required: true, label: 'Cantidad Producto', align: 'left' },
         { name: 'unidad_medida', required: true, label: 'Unidad Medida', align: 'left' },
         { name: 'acciones', label: 'Acciones', align: 'center' }
       ],

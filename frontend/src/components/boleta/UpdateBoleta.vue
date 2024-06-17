@@ -36,7 +36,7 @@
                             :pagination.sync="pagination">
                             <template v-slot:body-cell-nombre="props">
                                 <q-td :props="props">
-                                    <q-input v-model="props.row.nombre" label="Nombre" dense outlined autofocus
+                                    <q-input v-model="props.row.nombre" label="Nombre Producto" dense outlined autofocus
                                         :rules="[val => !!val || 'El nombre es requerido']" />
                                 </q-td>
                             </template>
@@ -108,9 +108,9 @@ export default {
       boleta: null,
       estados: ['Pendiente', 'Pagado', 'Anulado'],
       columns: [
-        { name: 'nombre', label: 'Nombre', field: 'nombre' },
+        { name: 'nombre', label: 'Nombre Producto', field: 'nombre' },
         { name: 'precio_unitario', label: 'Precio Unitario', field: 'precio_unitario', align: 'right' },
-        { name: 'cantidad', label: 'Cantidad', field: 'cantidad', align: 'right' },
+        { name: 'cantidad', label: 'Cantidad Producto', field: 'cantidad', align: 'right' },
         { name: 'unidad_medida', label: 'Unidad de Medida', field: 'unidad_medida' },
         { name: 'acciones', label: 'Acciones', field: 'acciones', align: 'center' }
       ],

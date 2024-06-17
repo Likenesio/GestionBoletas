@@ -136,12 +136,9 @@
         <q-page padding>
             <template v-if="isExactDashboard">
               <article>
-              <div class="title">
-                <h1>NUTRIVER</h1>
-              </div>
               <div class="q-pa-md">
                 <q-carousel class="carousel-container" swipeable animated v-model="slide" thumbnails infinite>
-                  <q-carousel-slide class="img-carousel" :name="1" img-src="https://cdn.quasar.dev/img/mountains.jpg" />
+                  <q-carousel-slide class="img-carousel" :name="1" img-src="../../assets/images/huerta en casa.png" />
                   <q-carousel-slide class="img-carousel" :name="2" img-src="https://cdn.quasar.dev/img/parallax1.jpg" />
                   <q-carousel-slide class="img-carousel" :name="3" img-src="https://cdn.quasar.dev/img/parallax2.jpg" />
                   <q-carousel-slide class="img-carousel" :name="4" img-src="https://cdn.quasar.dev/img/quasar.jpg" />
@@ -231,6 +228,9 @@ export default {
   padding: 0;
   box-sizing: border-box;
 }
+.q-pa-md{
+  padding: 0px !important;
+}
 #list {
   margin-top: 30px;
 }
@@ -239,19 +239,13 @@ export default {
   width: 110px;
 }
 .img-carousel{
-  object-fit: cover;
+  object-fit:1;
+  object-position: center;
 }
 .carousel-container{
-  width: 100%;
-  height: 720px;
+  max-width: 100%;
+  height: 90vh;
   padding: 0;
   margin: 0;
-}
-.title{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-content: center;
-  align-items: center;
 }
 </style>
