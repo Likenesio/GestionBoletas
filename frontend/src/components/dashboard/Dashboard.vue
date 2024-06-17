@@ -134,18 +134,19 @@
 
       <q-page-container>
         <q-page padding>
-            <template v-if="isExactDashboard">
-              <article>
+          <template v-if="isExactDashboard">
+            <article>
               <div class="q-pa-md">
                 <q-carousel class="carousel-container" swipeable animated v-model="slide" thumbnails infinite>
                   <q-carousel-slide class="img-carousel" :name="1" img-src="../../assets/images/huerta en casa.png" />
-                  <q-carousel-slide class="img-carousel" :name="2" img-src="https://cdn.quasar.dev/img/parallax1.jpg" />
-                  <q-carousel-slide class="img-carousel" :name="3" img-src="https://cdn.quasar.dev/img/parallax2.jpg" />
-                  <q-carousel-slide class="img-carousel" :name="4" img-src="https://cdn.quasar.dev/img/quasar.jpg" />
+                  <q-carousel-slide class="img-carousel" :name="2" img-src="../../assets/images/auto-nutriver.jpeg" />
+                  <q-carousel-slide class="img-carousel" :name="3" img-src="../../assets/images/delivery.jpeg" />
+                  <q-carousel-slide class="img-carousel" :name="4"
+                    img-src="../../assets/images/entrega-de-tomates.jpeg" />
                 </q-carousel>
               </div>
             </article>
-            </template>
+          </template>
           <router-view />
         </q-page>
       </q-page-container>
@@ -223,14 +224,16 @@ export default {
 
 
 <style>
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-.q-pa-md{
+
+.q-pa-md {
   padding: 0px !important;
 }
+
 #list {
   margin-top: 30px;
 }
@@ -238,11 +241,13 @@ export default {
 .dropdown {
   width: 110px;
 }
-.img-carousel{
-  object-fit:1;
+
+.img-carousel {
+  object-fit: 1;
   object-position: center;
 }
-.carousel-container{
+
+.carousel-container {
   max-width: 100%;
   height: 90vh;
   padding: 0;
