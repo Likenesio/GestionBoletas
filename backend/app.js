@@ -31,7 +31,7 @@ const db_port = process.env.DB_PORT;
 const db_name = process.env.DB_NAME;
 const port = process.env.PORT || 3000;
 
-mongoose.connect(`mongodb://${db_host}:${db_port}/${db_name}`, options)
+mongoose.connect(`mongodb+srv://${db_host}:${db_port}@prueba.ycow5hn.mongodb.net//${db_name}`, options)
 .then(() => console.log('> Successfully connected to DB')).catch(err => console.log(err))
 
 app.listen(port, () => {
