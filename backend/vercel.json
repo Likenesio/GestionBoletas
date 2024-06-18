@@ -1,10 +1,13 @@
 {
-    "builds":[{
+    "builds": [{
         "src": "./app.js",
         "use": "@vercel/node"
     }],
-    "routes": [{
-        "src": "/api/*",
-        "dest": "/"
-    }]
+    "routes": [
+        { "handle": "filesystem" },
+        {
+            "src": "/api/(.*)",
+            "dest": "/app.js"
+        }
+    ]
 }
